@@ -17,6 +17,71 @@
       "source": "/sitemap.xml",
       "destination": "/sitemap-index.xml",
       "permanent": true
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "https://www.comfydeploy.ing/api/:path*",
+      "permanent": false
+    },
+    {
+      "source": "/machines/:path*",
+      "destination": "https://app.comfydeploy.com/machines",
+      "permanent": false
+    },
+    {
+      "source": "/workflow/:path*",
+      "destination": "https://app.comfydeploy.com/workflows",
+      "permanent": false
+    },
+    {
+      "source": "/workflows/:path*",
+      "destination": "https://app.comfydeploy.com/workflows",
+      "permanent": false
+    },
+    {
+      "source": "/models/:path*",
+      "destination": "https://app.comfydeploy.com/models",
+      "permanent": false
+    },
+    {
+      "source": "/assets/:path*",
+      "destination": "https://app.comfydeploy.com/assets",
+      "permanent": false
+    },
+    {
+      "source": "/ai/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/flux-lora-2",
+      "destination": "/blog/flux-loras",
+      "permanent": true
+    },
+    {
+      "source": "/blog/create-your-comfyui-based-app-and-served-with-comfy-deploy",
+      "destination": "/blog/create-your-comfyui-based-app-and-serve-it-with-comfy-deploy",
+      "permanent": true
+    },
+    {
+      "source": "/blog/create-your-own-ai-singer-combining-ace-step-and-float-in-comfydeploy",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/comfy-node/:path*",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/docs",
+      "destination": "https://docs.comfydeploy.com",
+      "permanent": true
+    },
+    {
+      "source": "/docs/:path*",
+      "destination": "https://docs.comfydeploy.com/docs/:path*",
+      "permanent": true
     }
   ]
 }

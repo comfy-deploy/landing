@@ -12,9 +12,11 @@ interface Props {
   type?: 'website' | 'article';
   jsonLd?: object | object[];
   noindex?: boolean;
+  /** Send signed-in app users straight to app.comfydeploy.com (homepage only, like the Framer site did). */
+  authRedirect?: boolean;
 }
 
-const { title, description, image = '/og.png', type = 'website', jsonLd, noindex } = Astro.props;
+const { title, description, image = '/og.png', type = 'website', jsonLd, noindex, authRedirect } = Astro.props;
 // build.format 'file' makes pathname end in .html in prod builds; canonical must be the clean URL
 const cleanPath = Astro.url.pathname.replace(/(index)?\.html$/, '').replace(/\/$/, '') || '/';
 const canonical = new URL(cleanPath, SITE.url).href;
@@ -35,6 +37,16 @@ const ld = [org, ...(jsonLd ? [jsonLd].flat() : [])];
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    {
+      authRedirect && (
+        <script is:inline>
+          // Clerk sets __client_uat (optionally suffixed) on .comfydeploy.com: a unix timestamp when signed in, 0 when signed out.
+          // Framer loaded the whole Clerk SDK (~1.8MB) to do this; a cookie read is enough. ?stay skips it.
+          if (/(?:^|;\s*)__client_uat(?:_[\w-]+)?=[1-9]/.test(document.cookie) && !/[?&]stay\b/.test(location.search))
+            location.replace('https://app.comfydeploy.com/');
+        </script>
+      )
+    }
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -76,6 +88,30 @@ const ld = [org, ...(jsonLd ? [jsonLd].flat() : [])];
       <slot />
     </main>
     <Footer />
+    <script is:inline>
+      // Analytics carried over from Framer (GA4 G-WKBYQS1J3Q, Google Ads AW-17197205183, Dub outbound for cal.com).
+      // Loaded after window load + idle so it never competes with first paint.
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-WKBYQS1J3Q');
+      gtag('config', 'AW-17197205183');
+      addEventListener('load', () =>
+        (window.requestIdleCallback || setTimeout)(() => {
+          const add = (src, attrs = {}) => {
+            const s = document.createElement('script');
+            s.src = src;
+            s.async = true;
+            for (const k in attrs) s.setAttribute(k, attrs[k]);
+            document.head.append(s);
+          };
+          add('https://www.googletagmanager.com/gtag/js?id=G-WKBYQS1J3Q');
+          add('https://www.dubcdn.com/analytics/script.js', { 'data-domains': '{"outbound":"app.cal.com"}' });
+        }),
+      );
+    </script>
     <script>
       // Hover spotlight for feature rows: one passive listener, writes a CSS var. No layout work.
       for (const el of document.querySelectorAll<HTMLElement>('[data-spotlight]')) {
