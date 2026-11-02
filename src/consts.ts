@@ -14,7 +14,6 @@ export const LINKS = {
   discord: 'https://discord.gg/R5VQvu2Hwt',
   github: 'https://github.com/BennyKok/comfyui-deploy',
   x: 'https://x.com/comfydeploy',
-  announcement: '/blog/re-open-sourcing-comfydeploy',
 };
 
 export const NAV = [

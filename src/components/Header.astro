@@ -6,7 +6,7 @@ const path = Astro.url.pathname;
 
 <header class="hdr">
   <div class="wrap hdr-in">
-    <a href="/" class="brand" aria-label="ComfyDeploy home"><Logo /> <span>ComfyDeploy</span></a>
+    <a href="/" class="brand" aria-label="ComfyDeploy home"><Logo size={20} /> <span class="brand-name">ComfyDeploy</span></a>
     <nav aria-label="Primary">
       <ul>
         {
@@ -31,6 +31,23 @@ const path = Astro.url.pathname;
       </button>
       <a class="login" href={LINKS.app}>Sign in</a>
       <a class="btn btn-primary btn-sm" href={LINKS.start}>Get started</a>
+      <details class="menu">
+        <summary aria-label="Menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"
+            ><path d="M4 8h16M4 16h16"></path></svg
+          >
+        </summary>
+        <ul>
+          {
+            NAV.map((n) => (
+              <li>
+                <a href={n.href}>{n.label}</a>
+              </li>
+            ))
+          }
+          <li><a href={LINKS.app}>Sign in</a></li>
+        </ul>
+      </details>
     </div>
   </div>
 </header>
@@ -136,6 +153,56 @@ const path = Astro.url.pathname;
     .login {
       display: none;
     }
+  }
+  @media (max-width: 640px) {
+    .brand-name {
+      display: none;
+    }
+  }
+  .menu {
+    display: none;
+    position: relative;
+  }
+  .menu summary {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    cursor: pointer;
+    list-style: none;
+  }
+  .menu summary::-webkit-details-marker {
+    display: none;
+  }
+  .menu ul {
+    position: absolute;
+    right: 0;
+    top: 44px;
+    min-width: 200px;
+    margin: 0;
+    padding: 8px;
+    list-style: none;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px -20px #0003;
+  }
+  .menu a {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+  }
+  .menu a:hover {
+    background: var(--bg-2);
+  }
+  @media (max-width: 900px) {
+    .menu {
+      display: block;
+    }
+  }
+  @media (max-width: 900px) {
     .hdr-cta {
       margin-left: auto;
     }
