@@ -1,0 +1,131 @@
+---
+title: "You don't need Next JS"
+description: "Why we moved the ComfyDeploy dashboard from Next.js to React with TanStack Router and Rspack: build time fell from 3 minutes to 18 seconds."
+date: 2025-04-15
+category: "Release"
+---
+
+We migrated the ComfyDeploy dashboard from Next.js to just React
+
+## TL;DR
+
+- Build time went from **3 mins** to **18 secs**
+- Hot reload under **200ms**
+- Everybody on the team is happier (like, way happier)
+
+My tweet about this blew up, so I thought it'd be helpful to break down exactly why we made this move.
+
+> You don't need NextJS.
+>
+> POV: Upgraded [@comfydeploy](https://twitter.com/comfydeploy?ref_src=twsrc%5Etfw) from NextJS to just React.
+>
+> - Build time went from 3mins to 18 secs.
+> - Hot reload under 200ms
+> - Faster page switching, because, it's just HTML and JS
+>
+> We spent a week copypasting all the .tsx files, and it's worth it.
+>
+> The new… [pic.twitter.com/1ie3kT83CN](https://t.co/1ie3kT83CN)
+>
+> — BennyKok (@BennyKokMusic) [December 30, 2024](https://twitter.com/BennyKokMusic/status/1873733195767971892?ref_src=twsrc%5Etfw)
+
+## How we got here
+
+I started ComfyDeploy as an open source project [GitHub](https://github.com/BennyKok/comfyui-deploy) - a full stack app with Next.js doing all the heavy lifting for both frontend and backend. We had Drizzle + Server Actions making everything type-safe and neat.
+
+It was all good until things started hitting the fan:
+
+- We received an unexpected $2,000 bill from Vercel due to high API usage from a single user
+- Testing APIs became a nightmare because we had a lof of server actions mixed with api routes.
+- Build times got so slow it felt like watching paint dry.
+- Local dev was brutal - every tiny change triggered a full SSR reload
+
+Next.js is a powerful full-stack framework, but its all-in-one approach can lead to development complexity as your application grows. Our decision to migrate was driven by two key factors: First, as an API platform, we needed to scale beyond Vercel's function limitations - a dedicated auto-scaling server made more sense than Next.js's API layers. Second, since our dashboard was primarily React-based and didn't require Next.js's server-side features, the framework's optimizations were adding unnecessary overhead. Moving to a pure React setup was the logical choice for our use case.
+
+## The build up
+
+As we kept growing, we kept adding more libraries. The build just kept getting slower and slower. At one point, after adding Sentry, it hit 7 minutes. Seven. Minutes. Fixing a typo literally give you a coffee break.
+
+The local dev situation wasn't any better. We're running this monorepo with Turborepo, not to mention it became such a pain to manage. Starting up dev servers felt like booting up an old Windows 95 PC, on my M3 Max Macbook Pro.
+
+Then Next.js 15 RC dropped. I thought, "Hey, Turbopack might save us!" Spent a week upgrading, only to run into compatibility issues. Another week later, we're back on 14, wondering why we're spending more time wrestling with Next.js than actually building our product.
+
+## The turning point
+
+One morning, I'm sitting there watching Next.js take 10 seconds just to start up. That was it. I'd had enough.
+
+> "Hey team, we're going back to React. Give me a week."
+
+We went all in with TanStack Router + Rspack. Moved our entire shadcn folder, our components, everything. And you know what? Within days, it felt like we'd broken free from chains we didn't even know we had:
+
+- Instant dev server - less than **2 secs**.
+- Vercel build under **18 secs**.
+- Web dev actually **fun** again!
+
+The migration forced us to clean house too - ditching old features we didn't need, dropping unused dependencies, and completely rethinking our API setup. Sometimes you need to tear things down to build them back better.
+
+## The Numbers
+
+### Next js 15 with turbo mode
+
+Here's our local dev experience with next js 15 with turbo mode
+
+| Metric | Time |
+| --- | --- |
+| First page build | 10.4 secs |
+
+### React with Tanstack Router + Rspack
+
+| Metric | Time |
+| --- | --- |
+| Route compute | ~200ms |
+| Initial dev bundle | 1.67 secs |
+
+## The Trade-offs
+
+Let's be real - every technical decision comes with trade-offs. Here's what we gave up and gained:
+
+### What We Lost
+
+**1\. Co-location of Frontend and Backend**
+
+Now we have separate frontend and backend codebases but end up having better separation of concerns, clearer boundaries
+
+**2\. Next.js Caching Features**
+
+We lost built-in caching mechanisms but actually most of our data needed real-time updates. We ended up implementing specific caching where actually needed
+
+**3\. Pre-rendering and Initial Load**
+
+No more automatic static generation. Required more thoughtful code splitting to save page load speed. But actually improved UX. No more "ghost clicks" where users see buttons they can't interact with because JS hasn't loaded. More predictable loading states
+
+**4\. Server Components and Actions**
+
+Lost the "magic" of server components. Server Actions made quick data fetching too easy (maybe too easy?) Forced us to design better, more intentional APIs Better for our real-time needs - polling updates were actually harder with [blocking server actions](https://github.com/vercel/next.js/discussions/50743).
+
+### The Reality Check
+
+Here's the thing: these "losses" forced us to make better architectural decisions. Instead of relying on framework magic, we had to:
+
+- Design our API contracts more thoughtfully.
+- Implement caching where it actually mattered.
+- Think about data flow and state management more deliberately.
+
+Sometimes constraints are exactly what you need to build something better.
+
+## Conclusion
+
+If you want to compare the two version [ComfyDeploy React](https://app.comfydeploy.com/) vs [ComfyDeploy Next.js](https://www.comfydeploy.com/workflows).
+
+Next.js is great for what it's meant to do - landing pages, SEO stuff, that kind of thing. It makes simple concepts look fancy (Server Actions - is just REST API calls).
+
+But for most products? It's like using a sledgehammer to hang a picture frame. The jump from Next.js 14 to 15 really drove this home - dependencies breaking left and right, and even with Turbo mode, dev server is still slow enough to make you want to bang your head against the wall.
+
+We still keep Next.js around for our landing page and SEO stuff, but the dashboard? Pure React with TanStack Router + Rspack. Our API? A simple Python FastAPI server chilling on Google Cloud Run, scaling whenever it needs to.
+Sometimes less really is more. And in our case, less Next.js meant more shipping, more speed, and more happy developers.
+
+And I want to be clear - Vercel itself is an amazing company that's built incredible products. We still use and love their platform for various projects. Next.js just turned out to be more than what we needed for our specific use case at this stage of our product.
+
+## Lastly!
+
+We are looking for people obsessed with shipping dev tools, from pushing the pixels on the frontend to optimizing diffusion models in the backend. DM me on [twitter](https://x.com/BennyKokMusic) if you're down.

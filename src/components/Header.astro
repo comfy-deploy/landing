@@ -1,0 +1,143 @@
+---
+import Logo from './Logo.astro';
+import { NAV, LINKS } from '../consts';
+const path = Astro.url.pathname;
+---
+
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a href="/" class="brand" aria-label="ComfyDeploy home"><Logo /> <span>ComfyDeploy</span></a>
+    <nav aria-label="Primary">
+      <ul>
+        {
+          NAV.map((n) => (
+            <li>
+              <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>
+                {n.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <div class="hdr-cta">
+      <button class="theme" type="button" aria-label="Toggle dark mode" data-theme-toggle>
+        <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"
+          ><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg
+        >
+        <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"
+          ><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path></svg
+        >
+      </button>
+      <a class="login" href={LINKS.app}>Sign in</a>
+      <a class="btn btn-primary btn-sm" href={LINKS.start}>Get started</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const dark = root.dataset.theme !== 'dark';
+    if (dark) root.dataset.theme = 'dark';
+    else delete root.dataset.theme;
+    try {
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    } catch {}
+  });
+</script>
+
+<style>
+  .hdr {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter: saturate(180%) blur(18px);
+    -webkit-backdrop-filter: saturate(180%) blur(18px);
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  }
+  .hdr-in {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 60px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 1.125rem;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+  nav {
+    flex: 1;
+  }
+  nav ul {
+    display: flex;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  nav a {
+    display: block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+  nav a:hover,
+  nav a[aria-current='page'] {
+    color: var(--ink);
+    background: var(--bg-2);
+  }
+  .hdr-cta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .login {
+    font-size: 0.9375rem;
+    color: var(--ink-2);
+    text-decoration: none;
+    padding: 6px 10px;
+  }
+  .login:hover {
+    color: var(--ink);
+  }
+  .theme {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    border: 0;
+    background: transparent;
+    color: var(--ink-2);
+    cursor: pointer;
+  }
+  .theme:hover {
+    background: var(--bg-2);
+    color: var(--ink);
+  }
+  .i-moon,
+  :global([data-theme='dark']) .i-sun {
+    display: none;
+  }
+  :global([data-theme='dark']) .i-moon {
+    display: block;
+  }
+  @media (max-width: 900px) {
+    nav,
+    .login {
+      display: none;
+    }
+    .hdr-cta {
+      margin-left: auto;
+    }
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+import { Image } from 'astro:assets';
+import wildlife from '../assets/logos/logo-wildlife.svg?raw';
+import vizcom from '../assets/logos/logo-vizcom.svg?raw';
+import vtpro from '../assets/logos/logo-vtprodesign.svg?raw';
+import bmark from '../assets/logos/logo-b.svg?raw';
+import silverside from '../assets/logos/silverside.png';
+
+const svgs = [
+  { name: 'Customer', svg: bmark, h: 30 },
+  { name: 'Wildlife', svg: wildlife, h: 34 },
+  { name: 'Vizcom', svg: vizcom, h: 18 },
+  { name: 'VTProDesign', svg: vtpro, h: 20 },
+];
+---
+
+<section class="logos" aria-label="Trusted by">
+  <div class="wrap row">
+    <p class="muted">Trusted by teams at</p>
+    <ul>
+      {
+        svgs.slice(0, 2).map((l) => (
+          <li style={`height:${l.h}px`} role="img" aria-label={l.name}>
+            <Fragment set:html={l.svg} />
+          </li>
+        ))
+      }
+      <li><Image src={silverside} alt="Silverside" height={20} width={Math.round((20 * 863) / 226)} class="png" /></li>
+      {
+        svgs.slice(2).map((l) => (
+          <li style={`height:${l.h}px`} role="img" aria-label={l.name}>
+            <Fragment set:html={l.svg} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .logos {
+    padding-block: clamp(56px, 8vw, 88px) 0;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 24px 48px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  p {
+    font-size: var(--step--1);
+  }
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 28px clamp(28px, 5vw, 56px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-3);
+  }
+  li {
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+  }
+  li:hover {
+    color: var(--ink);
+  }
+  li :global(svg) {
+    height: 100%;
+    width: auto;
+  }
+  .png {
+    opacity: 0.55;
+    transition: opacity 0.2s;
+  }
+  li:hover .png {
+    opacity: 1;
+  }
+  :global([data-theme='dark']) .png {
+    filter: invert(1);
+  }
+</style>

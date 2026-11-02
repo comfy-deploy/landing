@@ -1,0 +1,371 @@
+---
+title: "Unleashing Hunyuan Video in ComfyUI"
+description: "Run HunyuanVideo in ComfyUI: model variants (FP8, BF16, GGUF), required custom nodes, text encoders, VAE choices and how to store models in ComfyDeploy."
+date: 2025-01-22
+category: "Tutorial"
+cover: "./unleashing-hunyuan-video-in-comfyui/mf9r8TGne0ge6fYKF0GT4ZhqY8o.png"
+---
+
+> _“I am The Captain Now” Mr. Hollywood_
+
+HunyuanVideo is capable of a wide range of Styles
+
+By ImpactFrames
+
+## Introduction
+
+Craft stunning videos from text? That's Hanyuan Video, an open-source AI changing the game. Forget expensive equipment; translate your vision directly into high-resolution 720p videos. Hanyuan generates **high dynamic, fluid motion** far surpassing other open-source models in movement quality and consistency.
+
+On our tests, Hanyuan Video showed a superior quality and quantity of motion than any other open-source model. It is capable of so much more than boring zooms and pans shots and generates truly dynamic scenes. Its consistency is also top notch and has accurate prompt following and concept generalization to top all that is capable of uncensored outputs. 
+
+Users can craft anything from add insertions, B-roll to full blown scenes, and more, making the possibilities endless. Let’s explore how this ground breaking technology is changing video creation forever.
+
+## Understanding the Hunyuan Video Framework
+
+Hunyuan Video is not just another video generation model; it's a comprehensive system built with several innovative features:
+
+- Prompt Rewriting: The model includes a prompt rewrite model with two modes (Normal and Master) to adapt user prompts to the model’s preferred format, improving intent interpretation and optimizing composition and visual quality.
+- High Performance: The model generates high-quality videos with impressive motion quality, text alignment, and overall visual appeal.
+
+Efficient 3D VAE: A custom 3D Variational Autoencoder (VAE) with CausalConv3D is used to compress videos into a compact latent space. This significantly decreases the number of tokens while maintaining resolution and frame rate.
+
+![Unleashing Hunyuan Video in ComfyUI (figure 1)](./unleashing-hunyuan-video-in-comfyui/ySPOHsh1LCxz9UhBbE32CD8yNQE.png)
+
+Advanced Text Encoder: Hunyuan Video utilizes a Multimodal Large Language Model (MLLM) as its text encoder, surpassing the performance of CLIP and T5 encoders. This results in superior instruction following, detail capture, and complex reasoning capabilities.
+
+![Unleashing Hunyuan Video in ComfyUI (figure 2)](./unleashing-hunyuan-video-in-comfyui/Z092s1VHcb0F0GqebnqTQtzjQYs.png)
+
+Unified Image and Video Generation: The model uses a "dual-stream to single-stream" hybrid Transformer design, allowing it to process video and text tokens separately before combining them for a more effective multimodal fusion. This leads to improved motion consistency, image quality, and text alignment.
+
+![Unleashing Hunyuan Video in ComfyUI (figure 3)](./unleashing-hunyuan-video-in-comfyui/nZxjFQi5psfsP9KAZkXQQOkpxpM.png)
+
+**INSTALLATION:** 
+
+Comfy already provides an implementation of Hunyuan Video natively, nevertheless you need to download the models and place them in the correct folder.  There are also extra nodes available that compliment the functionality we will discuss them in due time in more detail for the moment here are some the most important you will need for the ComfyUI implementation:
+
+[https://github.com/logtd/ComfyUI-HunyuanLoom](https://github.com/logtd/ComfyUI-HunyuanLoom)
+
+[https://github.com/TTPlanetPig/Comfyui\_TTP\_Toolset](https://github.com/TTPlanetPig/Comfyui_TTP_Toolset)
+
+[https://github.com/facok/ComfyUI-TeaCacheHunyuanVideo](https://github.com/facok/ComfyUI-TeaCacheHunyuanVideo)
+
+[https://github.com/blepping/ComfyUI-bleh#blehsageattentionsampler](https://github.com/blepping/ComfyUI-bleh#blehsageattentionsampler)
+
+The other option is using Kijai’s Wrapper which is also a great option and my personal favourite way to run Hunyuan in comfy
+
+[https://github.com/kijai/ComfyUI-HunyuanVideoWrapper](https://github.com/kijai/ComfyUI-HunyuanVideoWrapper)
+
+Additionally You can get IF LLM to make Hunyuan prompts and GGUF model loader for local machines with low VRAM
+
+[GitHub - if-ai/ComfyUI-IF\_LLM](https://github.com/if-ai/ComfyUI-IF_LLM)
+[GitHub - city96/ComfyUI-GGUF](https://github.com/city96/ComfyUI-GGUF)
+## Models
+
+![Unleashing Hunyuan Video in ComfyUI (figure 4)](./unleashing-hunyuan-video-in-comfyui/pPAjR36evCI0rDnZU6KD6u3gOI.gif)
+
+**You won’t need all of them but to chose wisely,**
+
+Here are the model types
+
+FP32 will be the highest quality MP\_RANK fp8 produces similar result but is hard to couple with a LoRA
+
+BF16 t2v 720p is the next best for quality that fits just under 24GBVRAM but you will need 20 to 40 steps if you want quality pair it with a fp32 VAE. You can pair with the fast video LoRA but it will introduce some degradation into the mix there is also a CFG distilled version that produces fast outputs within 10 or 8 steps.
+
+FP8 will be the best compromise for lower end GPU fast outputs specially using CFG distills that can generate in under 10 steps. These models take around half the memory and disk space than bf16 with some degradation of quality.
+
+I personally recommend a combination of fp8 cfg-distill and fp8 llama text encoder +fp16 vae+loRA's for general use. like I use on my WFs
+
+GGUF this format made by the creator of LlaMA Cpp (Gary Garganov Unified Format) and ported to comfy by City96 he has release some of the quants that should allow to run Hunyuan Video on smaller GPUs I won't cover all of them but you can get them here
+
+[hunyuan\_video\_t2v\_720p\_bf16.safetensors](https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged/tree/main/split_files/diffusion_models)
+
+_HF-ID Comfy-Org/HunyuanVideo\_repackaged_
+
+> Place on ComfyUI/models/diffusion\_models
+
+The distilled model can produce outputs under **10 steps** with degradation 
+
+[hunyuan\_video\_720\_cfgdistill\_bf16.safetensors](https://huggingface.co/Kijai/HunyuanVideo_comfy/blob/main/hunyuan_video_720_cfgdistill_bf16.safetensors)
+
+_HF-ID Kijai/HunyuanVideo\_comfy_
+
+> Place on ComfyUI/models/diffusion\_models
+
+This is the distilled model can produce outputs under **10 steps** with a bit more degradation than the one above bf16
+
+[hunyuan\_video\_720\_cfgdistill\_fp8\_e4m3fn.safetensors](https://huggingface.co/Kijai/HunyuanVideo_comfy/blob/main/hunyuan_video_720_cfgdistill_fp8_e4m3fn.safetensors)
+
+_HF-ID Kijai/HunyuanVideo\_comfy_
+
+> Place on ComfyUI/models/diffusion\_models
+
+This is the fastest as it claims outputs under **10 steps**
+
+[hunyuan\_video\_FastVideo\_720\_fp8\_e4m3fn.safetensors](https://huggingface.co/Kijai/HunyuanVideo_comfy/blob/main/hunyuan_video_FastVideo_720_fp8_e4m3fn.safetensors)
+
+_HF-ID Kijai/HunyuanVideo\_comfy_
+
+> Place on ComfyUI/models/diffusion\_models
+
+**MP RANK**  
+
+This Model has The most accurate weights with less degradation of all the FP8s and closest to the fp32 version but comes in **.pt** format and it is not easily compatible with LORAs (I will probably make a workaround to pair LoRAs)
+
+[Mp\_rank\_00\_model\_states\_fp8.pt](https://huggingface.co/tencent/HunyuanVideo/blob/main/hunyuan-video-t2v-720p/transformers/mp_rank_00_model_states_fp8.pt)
+
+_HF-ID tencent/HunyuanVideo_
+
+> Place on ComfyUI/models/diffusion\_models
+
+Walking LoRA transfer of Motion
+
+LORA
+
+The fast video LoRA can make the normal model outputs faster in under 8 steps they claim 6 but the quality is too mushy imo so 8 or 10 ia good setting for me. Hunyuan Also support style LoRA's and there are various way we can exploit that to generate a particular motion like this examples of a walking animation introduced by the style Lora but acting as a motion LoRA
+
+[hyvideo\_FastVideo\_LoRA-fp8.safetensors](https://huggingface.co/Kijai/HunyuanVideo_comfy/blob/main/hyvideo_FastVideo_LoRA-fp8.safetensors)
+
+_HF-ID tencent/HunyuanVideo_
+
+> Place on ComfyUI/models/loras/hyvid
+
+This Model Encode the embeddings with the prompt/image information for conditioning
+
+[clip\_l.safetensors](https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged/blob/main/split_files/text_encoders/clip_l.safetensors)
+
+_HF-ID Comfy-Org/HunyuanVideo\_repackaged_
+
+> Place on ComfyUI/models/text\_encoders 
+
+[Llava\_llama3\_fp8\_scaled.safetensors](https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged/blob/main/split_files/text_encoders/llava_llama3_fp8_scaled.safetensors)
+
+_HF-ID Comfy-Org/HunyuanVideo\_repackaged_
+
+> Place on ComfyUI/models/text\_encoders 
+
+NOTE WHEN USING THE WRAPPER MAKE SURE TO DOWNLOAD THE MODEL TO THE LLM FOLDER
+
+[hunyuan\_video\_vae\_bf16.safetensors](https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged/tree/main/split_files/vae) 
+
+_HF-ID Comfy-Org/HunyuanVideo\_repackaged_
+
+> Place on ComfyUI/models/vae
+
+Probably a good idea if you can spare the VRAM to choose this one as VAE
+
+[Hunyuan\_video\_vae\_fp32.safetensors](https://huggingface.co/Kijai/HunyuanVideo_comfy/blob/main/hunyuan_video_vae_fp32.safetensors)
+
+_HF-ID Kijai/HunyuanVideo\_comfy_
+
+> Place on ComfyUI/models/vae
+
+GGUF
+
+![GGUF models for Low VRAM](./unleashing-hunyuan-video-in-comfyui/UHlXvmSeWCmn42eeahXAaO8e4aA.png)
+
+GGUF models for Low VRAM
+
+Since there are many files here and depends a lot on your machine VRAM/RAM
+Specs you should take a look the files that fit better on your machine for low a VRAM GPU probably safest with the smallest Q3\_K\_S commonly Q4 are the recommended compromise
+
+![Unleashing Hunyuan Video in ComfyUI (figure 6)](./unleashing-hunyuan-video-in-comfyui/cbpLEhRZumCQ4ZcwpRxKxnKAqBs.png)
+
+[https://huggingface.co/city96/HunyuanVideo-gguf/tree/main](https://huggingface.co/city96/HunyuanVideo-gguf/tree/main)
+
+_HF-ID_ city96/HunyuanVideo-gguf
+
+> Place on ComfyUI/models/diffusion\_models
+
+[city96/FastHunyuan-gguf · Hugging Face](https://huggingface.co/city96/FastHunyuan-gguf)
+_HF-ID_ city96/FastHunyuan-gguf
+
+Text encoder
+[https://huggingface.co/city96/llava-llama-3-8b-v1\_1-imat-gguf](https://huggingface.co/city96/llava-llama-3-8b-v1_1-imat-gguf)
+
+_HF-ID_ city96/llava-llama-3-8b-v1\_1-imat-gguf
+
+> Place on ComfyUI/models/text\_encoders
+
+### Saving your models in ComfyDeploy
+
+You won’t have to do it for this models since they are on public library but if you want them in private also 
+
+Open storage 
+
+![select the folder](./unleashing-hunyuan-video-in-comfyui/D1TyZKUKFXX5tCr28lcIhwl3xA.png)
+
+select the folder 
+
+![Unleashing Hunyuan Video in ComfyUI (figure 8)](./unleashing-hunyuan-video-in-comfyui/7kSk5Z37QxPgrHzwOekFr0U2U.png)
+
+Click the vae + sing. 
+
+![I want the VAE fp32 so I copy the HF-ID](./unleashing-hunyuan-video-in-comfyui/Lgg8vvZMSTXT6Djv6BOzEyCrUkg.png)
+
+I want the VAE fp32 so I copy the HF-ID  
+
+![Unleashing Hunyuan Video in ComfyUI (figure 10)](./unleashing-hunyuan-video-in-comfyui/OJDkf978mUVS76X3vCABYKT14Y.png)
+
+It finds all the models on that ID I click install.
+
+![Unleashing Hunyuan Video in ComfyUI (figure 11)](./unleashing-hunyuan-video-in-comfyui/xj1ddp5zMcz9BLmxNui7JMoLZJY.png)
+
+It just started the download and as soon as it finishes the model will be available on all my machines
+
+The Model is uncensored and can produce innocent stuff like people smoking
+
+## ComfyDeploy
+
+You are probably looking for a good place to run all these models. Well, comfy deploy is the best place to run your workflows. I like it better than running on my own computer since I don’t have to worry about installing anything. 
+
+The installations take too much time and sometimes I am just debugging instead of working. I just want an environment that is ready to work. That's when ComfyDeploy comes in but there are a few things to keep in mind to use it effectively. 
+
+1. Machines: 
+
+You can make a Machine with the exact configuration to run your workflow the setup is just on click you build your machine in a couple of minutes and then you are ready to run Once you create your machine you don’t need to make it again the settings are stored and you can come back and start your machine anytime you need. 
+
+![Unleashing Hunyuan Video in ComfyUI (figure 12)](./unleashing-hunyuan-video-in-comfyui/bny1YWkJfyuivxEfCuBhbcBcuYI.png)
+
+2.Assets: 
+
+You can upload your assets and have them ready for when you are on the go and want to have them handy to use in your WF without wasting time this can be videos, images, sound you name it 
+
+![Unleashing Hunyuan Video in ComfyUI (figure 13)](./unleashing-hunyuan-video-in-comfyui/4DO1THuregmOANWk0kC2hHC3Jg8.png)
+
+2.Storage:
+
+This is truly great. You can upload your models from any model provider as long as you have the URL CivitAI, HuggingFace, Github the upload is fast and is persistent between sessions MAMA mia! etc.. Best of all you can keep your secret sauce models private or get some from the public section Magnific!
+
+![Unleashing Hunyuan Video in ComfyUI (figure 14)](./unleashing-hunyuan-video-in-comfyui/xdAbLTtMA465n52Jhyu0YWkaSQ.png)
+
+3. Workflow:
+
+Amazingly similar like the storage, you have a private section where you can work on your super secret projects or you can also get a workflow from the library templates. 
+
+![Once the workflow starts the experience is the same as in your computer](./unleashing-hunyuan-video-in-comfyui/IFCYoNuOFWDGJzOJRLrctBwW2pE.png)
+
+Once the workflow starts the experience is the same as in your computer
+
+Same nodes, same shortcuts, pure comfy power!
+
+![Heck! You can even work from your **phone!**](./unleashing-hunyuan-video-in-comfyui/8yce3nG90O5MKlvQBBFO0V6Jhk.png)
+
+Heck! You can even work from your **phone!**
+
+![Unleashing Hunyuan Video in ComfyUI (figure 17)](./unleashing-hunyuan-video-in-comfyui/RB0al2jR0qevzK7lhee7ZzMEp8.png)
+
+## The Workflows
+
+I have prepared two specially crafted workflows to get you started using **Hunyuan** Video. These workflows are courtesy of **ComfyDeploy**. 
+
+The first is a (Native) that uses nodes that come with **ComfyUI**. This workflow contains T2V and I2V. Let's take a closer look at how to work with it.
+
+![You will get this you can see in the button corner the the machine](./unleashing-hunyuan-video-in-comfyui/Kfh1GYRJWbkR2NdSeqbOwTvicEs.png)
+
+You will get this you can see in the button corner the the machine 
+
+![And some additional information like the counter for your  run](./unleashing-hunyuan-video-in-comfyui/sRHrK4BaXQWX7pYJMQaXkf8MAI.png)
+
+And some additional information like the counter for your  run
+
+![Unleashing Hunyuan Video in ComfyUI (figure 20)](./unleashing-hunyuan-video-in-comfyui/axdu0NOXJvdnYK0i4gAaqP1f2I.png)
+
+Is important to take a look at this information you can see the machine the WF is running on in this case an **L40S** and you can see the elapsed time you can add more time if you need to
+
+![Here you can select your machine](./unleashing-hunyuan-video-in-comfyui/ISxKNvzjxqLOBz4njknFEFqegI.png)
+
+Here you can select your machine
+
+![You will see some logs and in less than a minute your WF seconds your](./unleashing-hunyuan-video-in-comfyui/CcdYIHlj3V98l7I6aDcMJKAVY.png)
+
+You will see some logs and in less than a minute your WF seconds your 
+
+![Unleashing Hunyuan Video in ComfyUI (figure 23)](./unleashing-hunyuan-video-in-comfyui/4UCwbHNGYcWFQZ63refFelJieo.png)![Unleashing Hunyuan Video in ComfyUI (figure 24)](./unleashing-hunyuan-video-in-comfyui/9GALdDwTK1AeWuSgdEMToDMz70.png)
+
+We need to click on the version name to move to our real workflow this is changing now it will go directly to the actual WF but in my version I have to do it this way
+
+![And then active and that’s it I can work now this just took one minute](./unleashing-hunyuan-video-in-comfyui/J2z5CGn4etKizk5ElmpkGB1v9B0.png)
+
+And then active and that’s it I can work now this just took one minute
+
+![Unleashing Hunyuan Video in ComfyUI (figure 26)](./unleashing-hunyuan-video-in-comfyui/5aKTa6MazyzWRsl1A1E4VQCgUd8.png)![Unleashing Hunyuan Video in ComfyUI (figure 27)](./unleashing-hunyuan-video-in-comfyui/NpwlIxMWnTpKZX6BesQztgaDXo.png)
+
+Okay I like the straight nodes so I am going to click the cogwheel at the button right corner and in litegraph select straight for the node connections
+
+![Okay if you need to edit anything and you want to save](./unleashing-hunyuan-video-in-comfyui/6coPgLoNR4WRSGWzDYMlFMviN1A.png)
+
+Okay if you need to edit anything and you want to save 
+
+Let’s say I want to delete this nodes and save
+
+![I can save on the save disk icon  button](./unleashing-hunyuan-video-in-comfyui/tD0Jt4Xi7RloXtgcM5bqUXtGY.png)
+
+I can save on the save disk icon  button
+
+![Unleashing Hunyuan Video in ComfyUI (figure 30)](./unleashing-hunyuan-video-in-comfyui/MP3Lvdgdl3hrLKY8vGACCDXy4lw.png)
+
+You can bring a video or an image to extract the concept directly from it and make the prompt on IF LLM Node
+
+!
+
+You need to install the qwenVL model on the LLM folder to see local models but what I like to do is use the API you can use the external API key filed to add your API key for Google Gemini, OPENAI, Anthropic, Groq, Mistral, XAI,  Deepseek or even Ollama (soon).
+
+![Now you can select a model this **gemini 2 flash** is amazing for this](./unleashing-hunyuan-video-in-comfyui/a0FUlKcvWRhQS46zE0krtT8x5wU.png)
+
+Now you can select a model this **gemini 2 flash** is amazing for this
+
+![Unleashing Hunyuan Video in ComfyUI (figure 32)](./unleashing-hunyuan-video-in-comfyui/GTXzbFlPmTi0s2dIEbS7AsbGqc8.png)
+
+On the profile you can select one of the many profiles I made to help you make prompts for this I am still perfecting the profile but this one work quite well The “**HyVideoSceneAnalyzer**”
+
+If you want to edit the prompt you can use the external prime directive to override the profile and set the system prompt 
+
+![Unleashing Hunyuan Video in ComfyUI (figure 33)](./unleashing-hunyuan-video-in-comfyui/lJmlroKWLF5VwJQcdGoVq9LtRPc.png)
+
+This node has a user prompt field and you can further guide the result for example I can force the LoRA tag or a certain description every time This node also can give you batches and run in loops but I will explain it some other time for now you don’t need that.
+
+Here is a Previous Prompt it made earlier:
+
+![Unleashing Hunyuan Video in ComfyUI (figure 34)](./unleashing-hunyuan-video-in-comfyui/dEaAQGOzqyDgCe4AZIt5vyi13rI.png)
+
+_“An anthropomorphic white cat femme fatale, wearing a one-piece dress, exhales smoke from a cigarette holder. Medium shot, low-key lighting, dramatic shadows. The cat's gaze is downward, contemplative. Slow, deliberate movement, elegant and mysterious. Retro style, ornate wallpaper, vintage desk accessories, seductive mood.3d hand painted film noir style **csetiarcane animation style** alone in the frame”_.
+
+I also used a concatenation to get the LoRA tag &lt;_**csetiarcane animation style**_\> but sometimes you can also rely directly on the user prompt.
+
+![Okay lets move into the models for the WF](./unleashing-hunyuan-video-in-comfyui/EKKAWdGDFq5O8s3DSjC0hFTmAg.png)
+
+Okay lets move into the models for the WF
+
+![Unleashing Hunyuan Video in ComfyUI (figure 36)](./unleashing-hunyuan-video-in-comfyui/Cm9TQ56esGYVaXSqXGJUjLPi6Kw.png)
+
+Like in your local version of comfy we can now load that VAE I uploaded earlier. I want to test if it improves the result a little. This workflow tries to achieve a good speed without compromising quality but you can always bypass speed boost nodes and load heavier models. To bypass a node you type Ctrl+M or Ctrl+B 
+
+![Unleashing Hunyuan Video in ComfyUI (figure 37)](./unleashing-hunyuan-video-in-comfyui/wC3ipomQVUz4pT2SweEsOvzdmYc.png)
+
+You can Load other Loras If you need them by chaining more of these nodes for Now I don’t really have one handy for this Project. I probably could make a tutorial on Training Loras next time! Loras' for HyVideo what makes this Model more interesting than even something like Sora IMO. 
+
+You can train Motion Loras, Styles, Concepts, Locations, Costumes and of course Characters. I am interested in character styles and motions.
+
+![Unleashing Hunyuan Video in ComfyUI (figure 38)](./unleashing-hunyuan-video-in-comfyui/aZqZVhhozJ7xYR3zOgj0IJX5OE.png)
+
+Now these two nodes here are going to determine the kind of control and result you get.
+
+The Empty Latent will focus more on your text prompt or if you import a single image you can disconnect the length and right click and transform the input to a widget to control how many frames the video will have.  At the moment it is connected to the video node and you can use that to control the length you can even load the video and use this node instead of the VAE Encode The IF\_LLM node will analyse the first frame and give you a prompt. 
+
+VAE Encode Tiled this node will pass to the latent from the video to the sampler this will create a video that resembles a bit more the original to guide the generation it will still use the prompt but the result will be still a little random.
+
+![Unleashing Hunyuan Video in ComfyUI (figure 39)](./unleashing-hunyuan-video-in-comfyui/9s2Ym4gNlAiQOUqlD2o3KEDHYA.png)
+
+Finally we have the sampler that applies a tea cache to speed up things a little you can disable the tea cache by setting the speed to 1x then we get an upscale and interpolation pass you can bypass this if you want to tweak your settings
+
+![My Native Workflow running on Comfy Deploy](./unleashing-hunyuan-video-in-comfyui/8FiLJ56n6RL1SqPbHgPUCJx02c0.png)![My Native Workflow running on Comfy Deploy](./unleashing-hunyuan-video-in-comfyui/WnCa2JmviORQw7buk7vcp5jN38.gif)
+
+My Native Workflow running on Comfy Deploy
+
+I expect the tools will come soon: ControlNets and IPAdapters, maybe style models like Flux redux will arrive in HunYuan too.
+
+But for Now we can use my other Workflow
+
+![Unleashing Hunyuan Video in ComfyUI (figure 42)](./unleashing-hunyuan-video-in-comfyui/xXgGjKrc9cQYDwNT6Qed3zVvFvc.png)![Unleashing Hunyuan Video in ComfyUI (figure 43)](./unleashing-hunyuan-video-in-comfyui/pPAjR36evCI0rDnZU6KD6u3gOI.gif)
+
+This workflow has a sort of un-sampling technique called RF-inversion. I think it better follows the motions but it produces a lot of noise. I am still exploring this method using Kijai Wrapper but it seems promising. I will come back to this on the next issue

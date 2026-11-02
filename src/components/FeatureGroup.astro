@@ -1,0 +1,51 @@
+---
+import Feature from './Feature.astro';
+interface Props {
+  title: string;
+  lede?: string;
+  items: string[][];
+  cols?: 2 | 3 | 4;
+}
+const { title, lede, items, cols = 4 } = Astro.props;
+---
+
+<div class="group">
+  <div class="gh">
+    <h3>{title}</h3>
+    {lede && <p class="muted">{lede}</p>}
+  </div>
+  <div class="grid" style={`--cols:${cols}`} data-spotlight>
+    {items.map(([t, d]) => <Feature title={t} as="h4">{d}</Feature>)}
+  </div>
+</div>
+
+<style>
+  .group + :global(.group) {
+    margin-top: clamp(56px, 8vw, 96px);
+  }
+  .gh {
+    margin-bottom: 28px;
+  }
+  h3 {
+    font-size: var(--step-2);
+  }
+  .gh p {
+    margin-top: 8px;
+    font-size: var(--step-1);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), 1fr);
+    gap: 0 32px;
+  }
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

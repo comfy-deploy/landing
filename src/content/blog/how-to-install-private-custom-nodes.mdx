@@ -1,0 +1,94 @@
+---
+title: "How to install private custom nodes?"
+description: "Add private ComfyUI custom nodes to a ComfyDeploy machine using a GitHub fine-grained access token and a custom Docker command pinned to a commit."
+date: 2025-02-01
+category: "Tutorial"
+cover: "./how-to-install-private-custom-nodes/mgp00yVp76x9MMwFrzCx9MQfzkw.png"
+---
+
+Sometimes, when dealing with complex or niche workflows, you might not find the custom nodes you need to complete your task. In such cases, one option is to create your own custom nodes and store them in a private repository.
+
+This issue can also occur if you already have a perfectly functioning workflow that relies on several custom nodes which take a long time to load initially—thereby increasing your cold start time and overall execution cost. To optimize performance, you can build custom nodes that include only the components you require and explore ways to enhance their efficiency.
+
+No matter your situation, in this guide we'll show you how to integrate these private custom nodes into your machines using Comfy Deploy.
+
+## TL;DR
+
+1. Create a Github Access Token
+2. Add this custom command in your machine
+3. Replace ACCESS\_TOKEN
+    - Replace REPO\_NAME
+    - Replace USER
+    - Replace COMMIT\_HASH
+
+```
+WORKDIR /comfyui/custom_nodes
+RUN git clone https://ACCESS_TOKEN@github.com/USER/REPO_NAME --recursive
+
+WORKDIR /comfyui/custom_nodes/REPO_NAME
+
+RUN git reset --hard COMMIT_HASH
+
+RUN if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
+RUN if [ -f install.py ]
+
+```
+
+## Create a Github Access Token
+
+1. Go to your user settings and click in `Developer Settings`
+
+![How to install private custom nodes? (figure 1)](./how-to-install-private-custom-nodes/pCraWDnFco9iulALFddf1q5zu8.png)
+
+2. I'll recommend you to create a Fine-grained token, so you only give the necessary permits.
+
+![How to install private custom nodes? (figure 2)](./how-to-install-private-custom-nodes/9gpDrd7HP6DGPiXLxqWUSImDhU.png)
+
+3. Since we are just giving grained access, we can create the token with not expiration date. Just make sure to select the correct repository and next permissions:
+4. Contents = read-only
+    - Metadata = read-only
+
+![This image is displaying how we have selected only the repository where we are saving our private custom nodes](./how-to-install-private-custom-nodes/dnDpG918wkhwBraFOsXwJKkkHg.png)![This image displays that we only have 2 permissions selected, contents and metatada, both in read-only access](./how-to-install-private-custom-nodes/4kgeVbldRTheRSO5ZP4bWG6Mp8o.png)
+
+4. Now just copy your access token and save it, we'll use it in the next step
+
+![The image displays the confirmation page where we can see the access token, the access token starts with github\_pat\_](./how-to-install-private-custom-nodes/eDfu3oxj1ydtNrx11OGivdnW8.png)
+
+## Add your private custom commands in your machine
+
+Now that we have the access token and the private repository, we need to create a custom docker command on your machine.
+
+The custom docker command looks like the following:
+
+```
+WORKDIR /comfyui/custom_nodes
+RUN git clone https://github_pat_11AHR6...@github.com/EmmanuelMr18/private-custom-nodes-example --recursive
+
+WORKDIR /comfyui/custom_nodes/private-custom-nodes-example
+
+RUN git reset --hard 1cb23f126304083a00998e9b850c4d5406ac84c5
+
+RUN if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
+RUN if [ -f install.py ]
+
+```
+
+Go to your machine and click in the Commands button, after doing this just copy and paste the commands that you have above, just make sure to replace `ACCESS_TOKEN`, `REPO_NAME`, `USER`, `COMMIT_HASH` with your values.
+
+![How to install private custom nodes? (figure 6)](./how-to-install-private-custom-nodes/VV1ioPqmfYl1TLuWn43eB99gXs.png)
+
+After building the building finish, we should be ready, and if you go to the full log section, you'll be able to see how the custom commands that we added are running correctly.
+
+![How to install private custom nodes? (figure 7)](./how-to-install-private-custom-nodes/HYyPobOMqXcgaXnZdFlrLlIFDXE.png)
+
+## FAQ
+
+1. How to get the `COMMIT_HASH`?
+
+Just go to your repository, click on commits and copy the latest one (or the one that you know is the good one)
+
+![How to install private custom nodes? (figure 8)](./how-to-install-private-custom-nodes/LazU1QF4T9uRa5CrcFQn4dGuGA.png)![How to install private custom nodes? (figure 9)](./how-to-install-private-custom-nodes/aM7fq3dtARMt1qJW360ihSXefZA.png)
+
+2. How to know what is the `REPO_NAME` and `USER` values?
+
+You can find this in the URL of your repository, in my case is `https://github.com/EmmanuelMr18/private-custom-nodes-example` , so the USER is `EmmanuelMr18` and REPO\_NAME is `private-custom-nodes-example`

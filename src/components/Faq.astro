@@ -1,0 +1,91 @@
+---
+// Native <details> accordion. Pages pass the same items to Base's jsonLd via faqJsonLd().
+interface Props {
+  items: [string, string][];
+  title?: string;
+}
+const { items, title = 'Frequently asked questions' } = Astro.props;
+---
+
+<section class="section faq">
+  <div class="wrap grid">
+    <h2>{title}</h2>
+    <div>
+      {
+        items.map(([q, a]) => (
+          <details name="faq">
+            <summary>{q}</summary>
+            <p>{a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+    gap: 40px clamp(32px, 6vw, 96px);
+  }
+  h2 {
+    font-size: var(--step-3);
+    max-width: 8em;
+  }
+  details {
+    border-top: 1px solid var(--line);
+  }
+  details:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding: 22px 0;
+    font-size: var(--step-1);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    cursor: pointer;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::after {
+    content: '';
+    flex: none;
+    width: 14px;
+    height: 14px;
+    background: linear-gradient(currentColor, currentColor) center / 100% 1.5px no-repeat,
+      linear-gradient(currentColor, currentColor) center / 1.5px 100% no-repeat;
+    transition: transform 0.25s;
+  }
+  details[open] summary::after {
+    transform: rotate(45deg);
+  }
+  summary:hover {
+    color: var(--accent);
+  }
+  p {
+    padding: 0 0 24px;
+    color: var(--ink-2);
+    max-width: 60ch;
+  }
+  details[open] p {
+    animation: open 0.3s ease-out;
+  }
+  @keyframes open {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+  @media (max-width: 800px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

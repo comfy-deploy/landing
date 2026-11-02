@@ -1,0 +1,222 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import SubHero from '../components/SubHero.astro';
+import Feature from '../components/Feature.astro';
+import Steps from '../components/Steps.astro';
+import Faq from '../components/Faq.astro';
+import CodeSample from '../components/CodeSample.astro';
+import { LINKS } from '../consts';
+import { faqJsonLd, breadcrumbJsonLd } from '../lib/schema';
+import nodesShot from '../assets/api-external-input-nodes.png';
+
+const pains = [
+  ['Environment and reproducibility', 'Pin custom nodes and commits, Python deps, and model paths. Updates break. Sharing takes days.'],
+  ['Scaling and ops', 'Concurrency, queues, retries, timeouts, GPU choice, model caching, logs, webhooks, versioning, staging, rollback.'],
+  ['API and security', 'Inputs and outputs, file handling, validation, errors, plus keys, rate limits, roles, and secrets. Weeks of glue code.'],
+];
+const pillars = [
+  {
+    t: 'Ship',
+    items: ['Staging and production slots with a unique deployment_id', 'Inputs and outputs mapped via External nodes, no glue code', 'Official TypeScript SDK, with Python and Ruby available'],
+  },
+  {
+    t: 'Scale',
+    items: ['Serverless GPUs with parallel runs (set Max Parallel GPUs)', 'Warm time or Always Warm to balance latency and cost', 'Per-second billing, scale to zero when idle'],
+  },
+  {
+    t: 'Control',
+    items: ['Manage API inputs visually in ComfyUI', 'Models cached once and available org-wide', 'Version history with one-click rollback'],
+  },
+];
+const control = [
+  ['Live testing', 'Run and debug your API safely inside ComfyUI before anyone else sees it.'],
+  ['Visual API builder', 'Drag nodes and define inputs, all inside ComfyUI.'],
+  ['Live preview', 'See exactly how your API behaves with real inputs and outputs in real time.'],
+  ['Auto-scaling backend', 'Infrastructure that grows from one to millions of requests without breaking.'],
+  ['One-click production', 'Go from ComfyUI workflow to a live, public API in under 60 seconds.'],
+  ['Auto-generated SDKs', 'Clean, documented code in Python, TypeScript, and more, ready to ship.'],
+];
+
+const faqs: [string, string][] = [
+  ['Is the ComfyUI API sync or async?', 'Both. For long runs, use async: you’ll receive a job ID and, optionally, a webhook callback.'],
+  ['What about auth, rate limits, and quotas?', 'API keys per org or project, with rate limits and usage caps to control spend and abuse.'],
+  ['Can I run many jobs in parallel, or in batches?', 'Yes. Parallelism and concurrency controls are built in, and batch patterns work via array inputs or job fan-out.'],
+  ['How are custom nodes and models handled at runtime?', 'They’re baked into the template’s machine, so production won’t drift when teammates update locally.'],
+  ['Can I deploy to my own infrastructure (VPC, on-prem, edge)?', 'Hybrid and on-prem runners are supported, and the API keeps the same contract.'],
+];
+---
+
+<Base
+  title="ComfyUI API: Deploy Workflows as Production APIs | ComfyDeploy"
+  description="Turn any ComfyUI workflow into a production-ready API. Define inputs visually, autoscale on serverless GPUs, and promote dev to staging to prod. TypeScript & Python SDKs."
+  jsonLd={[faqJsonLd(faqs), breadcrumbJsonLd('ComfyUI API', '/comfyui-api')]}
+>
+  <SubHero
+    from="Your ComfyUI workflow"
+    title="A production-ready ComfyUI API"
+    points={['Define API inputs in ComfyUI', 'Autoscaling GPUs and cold-start controls', 'Dev → Staging → Prod for ComfyUI']}
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="head">
+        <h2>Why is ComfyUI API deployment so hard?</h2>
+      </div>
+      <div class="pains">
+        {
+          pains.map(([t, d]) => (
+            <div>
+              <h3>{t}</h3>
+              <p>{d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section answer">
+    <div class="wrap">
+      <div class="head">
+        <p class="muted kicker">ComfyDeploy API</p>
+        <h2>From ComfyUI graph to live endpoint, in minutes.</h2>
+      </div>
+      <div class="pillars">
+        {
+          pillars.map((p) => (
+            <div>
+              <h3>{p.t}</h3>
+              <ul>
+                {p.items.map((i) => (
+                  <li>{i}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <Steps>
+    <li>
+      <h3><span>3</span>Mark your inputs</h3>
+      <div class="duo">
+        <div>
+          <h4>Design your API visually</h4>
+          <p class="muted">
+            Define the request and response directly in ComfyUI. ComfyDeploy’s External and Output nodes become your API schema. No YAML, no glue code.
+          </p>
+          <a class="link" href={LINKS.docs}>Learn more about ComfyDeploy custom nodes</a>
+        </div>
+        <div class="shot">
+          <Image src={nodesShot} alt="ComfyDeploy External Text input node connected to a CLIP Text Encode node in ComfyUI" widths={[600, 1000, 1600]} sizes="(max-width: 900px) 100vw, 540px" />
+        </div>
+      </div>
+    </li>
+    <li>
+      <h3><span>4</span>Share code with full control</h3>
+      <div class="grid3" data-spotlight>
+        {control.map(([t, d]) => <Feature title={t} as="h4">{d}</Feature>)}
+      </div>
+      <div class="duo dev">
+        <div>
+          <h4>Developer-ready integration</h4>
+          <p class="muted">SDKs and working code examples your engineering team can ship immediately, without digging through documentation.</p>
+          <a class="btn btn-primary" href={LINKS.apiDocs}>Read the API docs</a>
+        </div>
+        <CodeSample />
+      </div>
+    </li>
+  </Steps>
+
+  <Faq items={faqs} />
+</Base>
+
+<style>
+  .pains,
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .pains > div {
+    padding-top: 22px;
+    border-top: 2px solid #e5484d;
+  }
+  .pains h3,
+  .pillars h3 {
+    font-size: var(--step-1);
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+  .pains p {
+    color: var(--ink-3);
+  }
+  .answer {
+    padding-top: 0;
+  }
+  .kicker {
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+  .pillars > div {
+    padding: clamp(24px, 3vw, 32px);
+    border-radius: 20px;
+    background: var(--bg-2);
+  }
+  .pillars h3 {
+    font-size: var(--step-2);
+  }
+  .pillars ul {
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 12px;
+    color: var(--ink-2);
+  }
+  .pillars li {
+    padding-left: 18px;
+    position: relative;
+  }
+  .pillars li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    border-radius: 99px;
+    background: var(--accent);
+  }
+  .link {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--accent);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .link:hover {
+    text-decoration: underline;
+  }
+  .grid3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0 32px;
+  }
+  .dev {
+    margin-top: clamp(48px, 6vw, 72px);
+  }
+  .dev .btn {
+    margin-top: 24px;
+  }
+  @media (max-width: 900px) {
+    .pains,
+    .pillars,
+    .grid3 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

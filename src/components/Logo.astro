@@ -1,0 +1,16 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/comfydeploy-logo.png';
+const { size = 26 } = Astro.props;
+---
+
+<Image src={logo} alt="" width={Math.round((size * 451) / 269)} height={size} class="logo" loading="eager" />
+
+<style>
+  .logo {
+    flex: none;
+  }
+  :global([data-theme='dark']) .logo {
+    filter: invert(1) brightness(1.4);
+  }
+</style>

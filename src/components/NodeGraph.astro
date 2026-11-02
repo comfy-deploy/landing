@@ -1,0 +1,210 @@
+---
+// The hero: ComfyDeploy's flow drawn as a ComfyUI node graph.
+// Two static SVG layouts (wide + narrow) from the same node data; wires draw in once on load.
+const W = 210, H = 86;
+const nodes = [
+  { id: 'upload', kind: 'Upload', text: 'Your full workflow', color: '#f5b400' },
+  { id: 'deploy', kind: 'Deploy', text: 'With one click', color: '#a78bfa' },
+  { id: 'comfy', kind: 'ComfyUI', text: 'Everyone gets it', color: '#38bdf8', href: '/comfyui-online-workspace' },
+  { id: 'api', kind: 'API', text: 'Connect your tools', color: '#fb7185', href: '/comfyui-api' },
+  { id: 'play', kind: 'Playground', text: 'Auto-generated UI', color: '#34d399', href: '/comfyui-playground' },
+];
+
+const wide = {
+  vb: '0 0 900 340',
+  pos: { upload: [0, 127], deploy: [320, 127], comfy: [690, 0], api: [690, 127], play: [690, 254] } as Record<string, number[]>,
+};
+const narrow = {
+  vb: '0 0 340 610',
+  pos: { upload: [65, 0], deploy: [65, 140], comfy: [65, 290], api: [65, 410], play: [65, 530] } as Record<string, number[]>,
+};
+
+const outs = ['comfy', 'api', 'play'];
+function wideWires() {
+  const p = wide.pos;
+  const h = (a: number[], b: number[]) => {
+    const [x1, y1, x2, y2] = [a[0] + W, a[1] + H / 2, b[0], b[1] + H / 2];
+    const dx = (x2 - x1) * 0.5;
+    return `M${x1} ${y1} C${x1 + dx} ${y1} ${x2 - dx} ${y2} ${x2} ${y2}`;
+  };
+  return [
+    { d: h(p.upload, p.deploy), color: nodes[0].color },
+    ...outs.map((o) => ({ d: h(p.deploy, p[o]), color: nodes[1].color })),
+  ];
+}
+function narrowWires() {
+  const p = narrow.pos;
+  const v = (a: number[], b: number[]) => `M${a[0] + W / 2} ${a[1] + H} V${b[1]}`;
+  // fan out: trunk down the left edge into each output's left socket
+  const fan = (b: number[]) => {
+    const sx = p.deploy[0] + W / 2, sy = p.deploy[1] + H, tx = b[0], ty = b[1] + H / 2;
+    return `M${sx} ${sy} C${sx} ${sy + 34} 30 ${sy + 18} 30 ${sy + 52} V${ty - 14} Q30 ${ty} 44 ${ty} H${tx}`;
+  };
+  return [{ d: v(p.upload, p.deploy), color: nodes[0].color }, ...outs.map((o) => ({ d: fan(p[o]), color: nodes[1].color }))];
+}
+const layouts = [
+  { cls: 'g-wide', ...wide, wires: wideWires(), sockets: 'h' },
+  { cls: 'g-narrow', ...narrow, wires: narrowWires(), sockets: 'v' },
+];
+---
+
+<div class="graph" role="img" aria-label="Upload your full ComfyUI workflow, deploy it with one click, then use it as a ComfyUI workspace, an API, or an auto-generated Playground UI.">
+  {
+    layouts.map((L) => (
+      <svg class={L.cls} viewBox={L.vb} aria-hidden="true">
+        {L.wires.map((w, i) => (
+          <path class="wire" d={w.d} stroke={w.color} pathLength="1" style={`--i:${i}`} />
+        ))}
+        {L.wires.map((w, i) => (
+          <circle class="pulse" r="3.5" fill={w.color} style={`--i:${i}; offset-path: path('${w.d}')`} />
+        ))}
+        {nodes.map((n, i) => {
+          const [x, y] = L.pos[n.id];
+          const isOut = outs.includes(n.id);
+          const inSock = L.sockets === 'h' || isOut ? [0, H / 2] : [W / 2, 0];
+          const outSock = L.sockets === 'h' ? [W, H / 2] : [W / 2, H];
+          const body = (
+            <g transform={`translate(${x} ${y})`}>
+            <g class="node" style={`--n:${i}`}>
+              <rect class="n-bg" width={W} height={H} rx="12" />
+              <path class="n-head" d={`M0 12 A12 12 0 0 1 12 0 H${W - 12} A12 12 0 0 1 ${W} 12 V32 H0 Z`} />
+              <circle cx="16" cy="16" r="4" fill={n.color} />
+              <text class="n-kind" x="28" y="20.5">{n.kind}</text>
+              <text class="n-text" x="16" y="63">{n.text}</text>
+              {n.id !== 'upload' && <circle class="sock" cx={inSock[0]} cy={inSock[1]} r="5" stroke={i === 1 ? nodes[0].color : nodes[1].color} />}
+              {!isOut && <circle class="sock" cx={outSock[0]} cy={outSock[1]} r="5" stroke={n.color} />}
+            </g>
+            </g>
+          );
+          return n.href ? (
+            <a href={n.href} tabindex="-1">
+              {body}
+            </a>
+          ) : (
+            body
+          );
+        })}
+      </svg>
+    ))
+  }
+</div>
+
+<style>
+  .graph {
+    position: relative;
+    margin-inline: auto;
+    max-width: 900px;
+  }
+  .graph::before {
+    content: '';
+    position: absolute;
+    inset: -20% -10%;
+    background: var(--glow);
+    pointer-events: none;
+    z-index: -1;
+  }
+  svg {
+    width: 100%;
+    overflow: visible;
+  }
+  .g-narrow {
+    display: none;
+    max-width: 340px;
+    margin-inline: auto;
+  }
+  @media (max-width: 720px) {
+    .g-wide {
+      display: none;
+    }
+    .g-narrow {
+      display: block;
+    }
+  }
+
+  .n-bg {
+    fill: var(--bg);
+    stroke: var(--line);
+  }
+  .n-head {
+    fill: var(--bg-2);
+  }
+  .n-kind {
+    font: 12px var(--mono);
+    fill: var(--ink-3);
+  }
+  .n-text {
+    font: 500 17px var(--font);
+    letter-spacing: -0.01em;
+    fill: var(--ink);
+  }
+  .sock {
+    fill: var(--bg);
+    stroke-width: 2.5;
+  }
+  a .n-bg {
+    transition: stroke 0.2s;
+  }
+  a:hover .n-bg {
+    stroke: var(--ink-3);
+  }
+
+  .wire {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 0.9s cubic-bezier(0.6, 0, 0.2, 1) forwards;
+    animation-delay: calc(0.35s + var(--i) * 0.12s + (var(--i) > 0) * 0.5s);
+  }
+  .node {
+    opacity: 0;
+    animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+    animation-delay: calc(var(--n) * 0.1s);
+  }
+  .pulse {
+    offset-distance: 0%;
+    opacity: 0;
+    animation: flow 2.8s ease-in-out infinite;
+    animation-delay: calc(2s + var(--i) * 0.35s);
+  }
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes flow {
+    0% {
+      offset-distance: 0%;
+      opacity: 0;
+    }
+    15%,
+    85% {
+      opacity: 1;
+    }
+    100% {
+      offset-distance: 100%;
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .wire {
+      stroke-dashoffset: 0;
+    }
+    .node {
+      opacity: 1;
+    }
+    .pulse {
+      display: none;
+    }
+  }
+</style>

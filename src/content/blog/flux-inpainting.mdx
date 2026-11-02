@@ -1,0 +1,95 @@
+---
+title: "FLUX Inpainting"
+description: "Learn FLUX inpainting in ComfyUI: mask painting, prompt tweaks, differential diffusion, denoise settings and upscaling, with a polar bear example."
+date: 2025-02-24
+category: "Tutorial"
+cover: "./flux-inpainting/gTlyx95ypTjp4F4sLQ8uewi8NWo.png"
+---
+
+Whenever you need to position an object in the frame or modify an image element, inpainting is an essential technique to master.
+
+Start by bringing in the image we want to manipulate. I have an idea of placing a polar bear in the middle of the desert, holding a Coca-Cola bottle.
+
+Impainting in ComfyUI needs some exploration and trial and error. Using tools like ControlNet and Redux together can make it easier later.
+
+Let's begin our experimentation.
+
+![FLUX Inpainting (figure 1)](./flux-inpainting/H8IelQyoaRNblSWX4XsnAL8XK1c.png)
+
+Right-click on the image and open the mask editor. Now, you can paint a mask using the brush tool. We only need a rough shape of the bear.
+
+![FLUX Inpainting (figure 2)](./flux-inpainting/oaXHSuvdQryhehIURkAhvhWzM.png)
+
+I use the following prompt:
+
+> _A anthropomorphic realistic photo white polar Bear In the middle of the desert standing on it's hind legs in front of the camera, holding a "coke-cola" bottle_
+
+![FLUX Inpainting (figure 3)](./flux-inpainting/mOkmNKMxbMeebWKD90rx96tfcoc.png)
+
+My rough mask and text prompt combination didn't work as I expected. It places the bear on four legs. But I wish for a human pose.
+
+![FLUX Inpainting (figure 4)](./flux-inpainting/17st2VGvsaiPQk7iLDEusvAik.png)
+
+I tweaked my prompt, added "standing on its hind legs," and stretched the mask to match the silhouette of a polar bear.
+
+![FLUX Inpainting (figure 5)](./flux-inpainting/DrP6Hub6QE7zVz0JjeMbagNNQ.png)![FLUX Inpainting (figure 6)](./flux-inpainting/r9NJvRDdBqRTsfZSQl58JXqRkw.png)
+
+Now, the shape is better, but my mask needs more work. I tried a different seed near the one selected, and now the bear is more like what I want.
+
+![FLUX Inpainting (figure 7)](./flux-inpainting/38Ln1h2KhUl568n2TTWypBbgdI.png)
+
+The bear is missing part of its hand and head. Let's use inpainting again to improve it. I opened it in the mask editor. Then, I used a finer brush around the edges, filled in the shape, and regenerated it with the same settings.
+
+![FLUX Inpainting (figure 8)](./flux-inpainting/TAJpM3yCba9rqarljoNZOQIlLc.png)
+
+Now our bear is looking much better! I then rerun the image through our workflow, but instead of inpainting it, we do an image-to-image. With in the basic scheduler node, we select a small denoise value of 0.9
+
+![FLUX Inpainting (figure 9)](./flux-inpainting/ao5ET1Q7V1kXKSAQhCFnKAM9is.png)
+
+Now, we chain a "load upscale model" node and an upscale image using model nodes from the VAE decode Image output. And generate the final image for this test.
+
+![You can save this to your computer and drag it into comfyui to open the workflow](./flux-inpainting/O4V7qp7yh1tJRMUrWd0RwK6QY4.png)
+
+You can save this to your computer and drag it into comfyui to open the workflow
+
+## Fundamental Nodes For Inpainting
+
+The key nodes for this workflow are the _InpaintModelConditioning_ node and the _DifferentialDiffusion_ node.
+
+The differential diffusion nodes help maintain the images' details and integrity during the latest sampling steps. Meanwhile, the impainting node drives the conditioning and helps integrate the noise generated into the base image.
+
+![FLUX Inpainting (figure 11)](./flux-inpainting/uG6i9QCsv9l1cKJAwYJM0c5Das.png)
+
+Strong guidance is needed to make the generation follow the prompt more aggressively.
+
+![FLUX Inpainting (figure 12)](./flux-inpainting/jCXOebXWImqAeYZAwGy5KGQPNCc.png)
+
+The **ipndm** sampler is a good choice because it is quick and deterministic. It can help with iterating tasks by keeping the outputs reproducible. We can move within the same seed and have similar results as we experiment or fix the drawings.
+
+Finally, another critical component is leaving some leftover noise by selecting 0.90. This balances the current image details with the new generation in the masked area. If we apply all the denoising steps, the model may create artifacts and allow more room for errors.
+
+## Tips
+
+It Is important to note that this technique requires iteration; good results often need more than one or two passes.
+
+It's not effective to chase finer details with just raw inpainting. For better results, mix in techniques like control net and redux.
+
+The mask works best with broader strokes and is dependent on resolution. It is better to work with broader shapes than refined outlines.
+
+![FLUX Inpainting (figure 13)](./flux-inpainting/LK2jUUEVbTEMFSXvptSwnarl9vQ.png)![FLUX Inpainting (figure 14)](./flux-inpainting/JC4AjAwHnPWy58Ygqv3BoYJdmM.png)
+
+You can combine Loras to paint your character by merging a model with Flux.
+
+Also, Flux Fill is a special inpainting version of Flux that is also available.
+
+![FLUX Inpainting (figure 15)](./flux-inpainting/g26wp20rcE31OmJG23jX54I3qd8.png)
+
+Use it to explore concepts. Adjusting denoise to 75% generates interesting outputs.
+
+![FLUX Inpainting (figure 16)](./flux-inpainting/b7KbqPr0REc6MrHV6oczn4lx6Cs.png)
+
+Read more about the Flux ControlNet and Redux techniques.
+
+## Conclusion
+
+Inpainting creates captivating compositions easily. It also helps fix images and place objects. While it takes effort, the results can be very rewarding.

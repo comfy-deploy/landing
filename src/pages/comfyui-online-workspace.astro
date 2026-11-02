@@ -1,0 +1,159 @@
+---
+import Base from '../layouts/Base.astro';
+import SubHero from '../components/SubHero.astro';
+import FeatureGroup from '../components/FeatureGroup.astro';
+import Steps from '../components/Steps.astro';
+import ShareStep from '../components/ShareStep.astro';
+import Faq from '../components/Faq.astro';
+import { faqJsonLd, breadcrumbJsonLd } from '../lib/schema';
+
+const gpu = [
+  ['Cloud-based ComfyUI', 'The full ComfyUI interface from any device, with no local install or GPU required.'],
+  ['Fast cold starts, always-warm option', 'Quick startup, with an optional zero-latency mode for instant generation.'],
+  ['Parallel sessions on demand', 'Multiple teammates work at the same time without waiting in queues.'],
+  ['High-VRAM tiers (H100, A100, L40S)', 'Run memory-hungry workflows that crash on local machines.'],
+];
+const nodes = [
+  ['Org-wide model cache', 'Upload or download a model once and it’s instantly available to your whole organization. No duplicate downloads.'],
+  ['Install any custom nodes', 'Use the full ecosystem of community extensions without conflicts or manual setup.'],
+  ['Pin exact versions', 'Lock every dependency to its exact version and end the “dependency hell” that breaks workflows.'],
+  ['Preloaded popular models', 'Pull models directly from Hugging Face or Civitai, with token support for gated content.'],
+];
+const team = [
+  ['Identical setup for everyone', 'Share workflows knowing they’ll run exactly the same for everyone on your team.'],
+  ['One-click rollback', 'Experiment freely and instantly revert to any previous working state when an update breaks.'],
+  ['Instant workflow sharing', 'Send a link instead of files and dependencies. Everything loads preconfigured.'],
+  ['Role-based permissions', 'Control who can edit workflows and who can only run them in the simplified Playground.'],
+];
+
+const faqs: [string, string][] = [
+  [
+    'How do you stop “Node types not found” and environment drift?',
+    'Workspaces pin custom nodes, Python dependencies, and model paths into a template. Teammates launch identical environments, so shared JSON and PNG workflows just open and run.',
+  ],
+  ['Can multiple teammates run the same workflow at the same time?', 'Yes. Runs execute in parallel, with org-level quotas so your team never bottlenecks on an internal queue.'],
+  ['How are models and assets stored? Can we use our own bucket?', 'Use org storage with caching, or point ComfyDeploy at your private S3 or S3-compatible bucket.'],
+  [
+    'Can we run on-prem or hybrid, and how hard is migrating from local?',
+    'Hybrid and on-prem runners are supported. Migration is three steps: import your JSON or PNG, attach models, and save a template.',
+  ],
+  ['Will my local ComfyUI JSON or PNG run as-is?', 'Import the workflow, attach models once, and save it as a team template. Everyone gets the same behavior.'],
+];
+---
+
+<Base
+  title="ComfyUI Online Workspace for Teams | ComfyDeploy"
+  description="Run ComfyUI online on managed H100 and A100 GPUs. Pinned custom nodes, shared models, and version control, so every teammate gets the exact same workflow."
+  jsonLd={[faqJsonLd(faqs), breadcrumbJsonLd('ComfyUI Online Workspace', '/comfyui-online-workspace')]}
+>
+  <SubHero
+    from="Your local ComfyUI workflow"
+    title="A ComfyUI online workspace for your team"
+    points={['Reproducible ComfyUI workflows for teams', 'ComfyUI version control with rollback', 'Share ComfyUI workflows without errors']}
+  />
+
+  <section class="section">
+    <div class="wrap duo">
+      <div class="head">
+        <h2>ComfyUI is powerful, but not built for collaboration.</h2>
+        <p class="lede">
+          The moment you share a workflow, things break. Mismatched nodes, missing models, and environment drift aren’t just annoyances. They’re a real cost to your
+          team.
+        </p>
+      </div>
+      <div class="err" role="img" aria-label="A ComfyUI error dialog reading: Node types not found, even when custom nodes are installed">
+        <div class="err-bar"><span></span><span></span><span></span></div>
+        <div class="err-body">
+          <p class="err-t">⚠ Node types not found</p>
+          <p class="err-d">Even when custom nodes are installed</p>
+          <ul>
+            <li>IPAdapterAdvanced</li>
+            <li>ControlNetApplyAdvanced</li>
+            <li>VHS_LoadVideo</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section answer">
+    <div class="wrap">
+      <div class="head">
+        <p class="muted kicker">ComfyUI Workspace</p>
+        <h2>Same workflow. Same nodes. Same models. Zero setup.</h2>
+        <p class="lede">
+          Launch ComfyUI in your browser on managed GPUs. Versions, plugins, and models are pinned by a workspace template, so every teammate gets the exact same
+          setup, with no installs and no drift.
+        </p>
+      </div>
+      <FeatureGroup title="High-VRAM serverless GPU power" lede="Never worry about hardware limits again." items={gpu} />
+      <FeatureGroup title="Full custom node and model support" lede="The entire ComfyUI ecosystem at your fingertips." items={nodes} />
+      <FeatureGroup title="Smooth team collaboration" lede="“Works on my machine” becomes “works everywhere.”" items={team} />
+    </div>
+  </section>
+
+  <Steps>
+    <ShareStep />
+  </Steps>
+
+  <Faq items={faqs} />
+</Base>
+
+<style>
+  .err {
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    background: var(--bg-2);
+    overflow: hidden;
+    box-shadow: 0 30px 80px -40px #d9304a55;
+    max-width: 440px;
+    justify-self: center;
+    width: 100%;
+  }
+  .err-bar {
+    display: flex;
+    gap: 7px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .err-bar span {
+    width: 11px;
+    height: 11px;
+    border-radius: 99px;
+    background: var(--line);
+  }
+  .err-body {
+    padding: 24px;
+  }
+  .err-t {
+    font-weight: 600;
+    font-size: var(--step-1);
+    color: #e5484d;
+  }
+  .err-d {
+    color: var(--ink-3);
+    margin-top: 4px;
+  }
+  .err ul {
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 8px;
+  }
+  .err li {
+    font: 13px var(--mono);
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--ink-2);
+  }
+  .kicker {
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+  .answer {
+    padding-top: 0;
+  }
+</style>

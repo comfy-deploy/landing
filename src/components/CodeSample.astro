@@ -1,0 +1,62 @@
+---
+import { Code } from 'astro:components';
+
+const code = `// npm i @comfydeploy/sdk
+import { ComfyDeploy } from "@comfydeploy/sdk";
+
+const cd = new ComfyDeploy({
+  apiKey: process.env.COMFYDEPLOY_API_KEY!,
+});
+
+// Trigger a run on your deployed workflow
+const run = await cd.runs.create({
+  deploymentId: "dep_123",
+  inputs: { prompt: "cozy living room, warm light" },
+});
+
+// Wait for completion and grab the first image URL
+const result = await cd.runs.wait(run.id);
+console.log(result.outputs.images[0].url);`;
+---
+
+<div class="code">
+  <div class="bar"><span></span><span></span><span></span><em>run.ts</em></div>
+  <Code code={code} lang="ts" theme="github-dark-default" />
+</div>
+
+<style>
+  .code {
+    border-radius: 18px;
+    border: 1px solid #2a2a33;
+    background: #0d1117;
+    overflow: hidden;
+    box-shadow: 0 40px 100px -40px #3a4bff66;
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #22222a;
+  }
+  .bar span {
+    width: 11px;
+    height: 11px;
+    border-radius: 99px;
+    background: #2e2e38;
+  }
+  .bar em {
+    margin-left: 10px;
+    font: 12px var(--mono);
+    font-style: normal;
+    color: #8b8b96;
+  }
+  .code :global(pre) {
+    margin: 0;
+    padding: 20px 22px 24px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    overflow-x: auto;
+    background: transparent !important;
+  }
+</style>

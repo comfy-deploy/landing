@@ -1,0 +1,41 @@
+---
+const { title, as: Tag = 'h3' } = Astro.props;
+---
+
+<div class="feat">
+  <Tag class="t">{title}</Tag>
+  <p><slot /></p>
+</div>
+
+<style>
+  .feat {
+    position: relative;
+    padding: 22px 0 28px;
+    border-top: 1px solid var(--line);
+  }
+  /* hover spotlight: the top hairline lights up where the cursor is (vars set by Spotlight script) */
+  .feat::before {
+    content: '';
+    position: absolute;
+    inset: -1px 0 auto;
+    height: 1px;
+    background: radial-gradient(160px circle at var(--x, -999px) 0, var(--accent), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .feat:hover::before {
+    opacity: 1;
+  }
+  .t {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  p {
+    color: var(--ink-3);
+    font-size: 0.9688rem;
+    line-height: 1.5;
+  }
+</style>

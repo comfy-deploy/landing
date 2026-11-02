@@ -1,0 +1,92 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { SITE } from '../../consts';
+
+const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const [featured, ...rest] = posts;
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+
+const title = 'ComfyUI Tutorials, Guides & Releases | ComfyDeploy Blog';
+const description =
+  'Tutorials, guides and release notes for running ComfyUI in production: FLUX, HunyuanVideo, custom nodes, GPU machines and deploying workflows as APIs.';
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: 'ComfyDeploy Blog',
+  url: `${SITE.url}/blog`,
+  description,
+};
+---
+
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <div class="wrap blog">
+    <header class="head">
+      <h1>Blog</h1>
+      <p class="lede">Tutorials, guides and releases from the ComfyDeploy team.</p>
+    </header>
+
+    <article class="featured">
+      <a href={`/blog/${featured.id}`} class="cover-link" tabindex="-1" aria-hidden="true">
+        {featured.data.cover && (
+          <Image src={featured.data.cover} alt="" widths={[640, 960, 1280]} sizes="(min-width: 900px) 55vw, 100vw" loading="eager" fetchpriority="high" />
+        )}
+      </a>
+      <div class="text">
+        <p class="meta"><span class="cat">{featured.data.category}</span> · <time datetime={featured.data.date.toISOString()}>{fmt(featured.data.date)}</time></p>
+        <h2><a href={`/blog/${featured.id}`}>{featured.data.title}</a></h2>
+        <p class="desc">{featured.data.description}</p>
+      </div>
+    </article>
+
+    <ul class="list">
+      {rest.map((p) => (
+        <li>
+          <article>
+            <div class="text">
+              <p class="meta"><span class="cat">{p.data.category}</span> · <time datetime={p.data.date.toISOString()}>{fmt(p.data.date)}</time></p>
+              <h2><a href={`/blog/${p.id}`}>{p.data.title}</a></h2>
+              <p class="desc">{p.data.description}</p>
+            </div>
+            {p.data.cover && (
+              <a href={`/blog/${p.id}`} class="thumb" tabindex="-1" aria-hidden="true">
+                <Image src={p.data.cover} alt="" widths={[240, 480]} sizes="(min-width: 700px) 240px, 100vw" loading="lazy" />
+              </a>
+            )}
+          </article>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .blog { padding-block: clamp(56px, 9vw, 120px) clamp(80px, 12vw, 160px); }
+  .head { margin-bottom: clamp(48px, 7vw, 96px); }
+  h1 { font-size: var(--step-4); }
+  .head .lede { margin-top: 20px; }
+  .meta { font-size: var(--step--1); color: var(--ink-3); margin-bottom: 12px; }
+  .cat { color: var(--accent); font-weight: 500; }
+  h2 a { text-decoration: none; }
+  h2 a:hover { color: var(--accent); }
+  .desc { color: var(--ink-2); margin-top: 14px; max-width: 40em; }
+
+  .featured { display: grid; gap: 32px; padding-bottom: clamp(48px, 7vw, 96px); border-bottom: 1px solid var(--line); }
+  .featured h2 { font-size: var(--step-3); }
+  .featured .desc { font-size: var(--step-1); line-height: 1.45; }
+  .cover-link img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: calc(var(--radius) + 4px); border: 1px solid var(--line); }
+  @media (min-width: 900px) {
+    .featured { grid-template-columns: 1.3fr 1fr; align-items: center; gap: 64px; }
+  }
+
+  .list { list-style: none; margin: 0; padding: 0; }
+  .list li { padding-block: clamp(32px, 4vw, 48px); border-bottom: 1px solid var(--line); }
+  .list article { display: grid; gap: 24px; }
+  .list h2 { font-size: var(--step-2); }
+  .thumb img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--radius); border: 1px solid var(--line); }
+  @media (min-width: 700px) {
+    .list article { grid-template-columns: 1fr 240px; gap: 48px; align-items: center; }
+    .thumb { order: 2; }
+  }
+</style>

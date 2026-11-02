@@ -1,0 +1,144 @@
+---
+import Logo from './Logo.astro';
+import { LINKS } from '../consts';
+const year = new Date().getFullYear();
+
+const cols = [
+  {
+    title: 'Product',
+    links: [
+      { href: '/comfyui-online-workspace', label: 'ComfyUI Workspace' },
+      { href: '/comfyui-playground', label: 'ComfyUI Playground' },
+      { href: '/comfyui-api', label: 'ComfyUI API' },
+      { href: LINKS.pricing, label: 'Pricing' },
+    ],
+  },
+  {
+    title: 'Resources',
+    links: [
+      { href: LINKS.docs, label: 'Docs' },
+      { href: LINKS.apiDocs, label: 'API reference' },
+      { href: '/blog', label: 'Blog' },
+      { href: '/blog/comfy-deploy-privacy-policy', label: 'Privacy policy' },
+    ],
+  },
+  {
+    title: 'Community',
+    links: [
+      { href: LINKS.github, label: 'GitHub · 1.3k stars' },
+      { href: LINKS.discord, label: 'Discord' },
+      { href: LINKS.x, label: 'X (Twitter)' },
+    ],
+  },
+];
+---
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="cta">
+      <h2>Ready to empower your team?</h2>
+      <div class="cta-btns">
+        <a class="btn btn-primary" href={LINKS.start}>Get started</a>
+        <a class="btn btn-ghost" href={LINKS.demo}>Book a demo</a>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="about">
+        <a href="/" class="brand"><Logo size={22} /> ComfyDeploy</a>
+        <p class="muted">Open-source ComfyUI deployment for teams. Run, share, and serve ComfyUI workflows on cloud GPUs.</p>
+      </div>
+      {
+        cols.map((c) => (
+          <div>
+            <h3>{c.title}</h3>
+            <ul>
+              {c.links.map((l) => (
+                <li>
+                  <a href={l.href}>{l.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+    <p class="copy muted">© {year} ComfyDeploy</p>
+  </div>
+</footer>
+
+<style>
+  .ftr {
+    border-top: 1px solid var(--line);
+    padding-block: clamp(72px, 10vw, 128px) 40px;
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 32px;
+    padding-bottom: clamp(64px, 8vw, 96px);
+  }
+  .cta h2 {
+    font-size: var(--step-3);
+    max-width: 12em;
+  }
+  .cta-btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 2fr repeat(3, 1fr);
+    gap: 40px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-bottom: 12px;
+  }
+  .about p {
+    max-width: 30ch;
+    font-size: 0.9375rem;
+  }
+  h3 {
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--ink-3);
+    margin-bottom: 14px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  ul a {
+    font-size: 0.9375rem;
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+  ul a:hover {
+    color: var(--ink);
+  }
+  .copy {
+    margin-top: 56px;
+    font-size: 0.875rem;
+  }
+  @media (max-width: 760px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .about {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

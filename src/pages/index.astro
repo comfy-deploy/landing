@@ -1,0 +1,479 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import NodeGraph from '../components/NodeGraph.astro';
+import Logos from '../components/Logos.astro';
+import Feature from '../components/Feature.astro';
+import CodeSample from '../components/CodeSample.astro';
+import { LINKS, SITE } from '../consts';
+import workspaceShot from '../assets/comfyui-cloud-workspace.png';
+import playgroundShot from '../assets/comfyui-playground-app.png';
+import comfyLogo from '../assets/comfyui-logo.svg';
+import fillAvatar from '../assets/testimonial-fill.png';
+import allieAvatar from '../assets/testimonial-allie.png';
+
+const highlights = [
+  ['Install any custom nodes, any models', 'Share multiple environments easily'],
+  ['Powerful auto-scaling GPUs', 'H100, A100, B200, H200, L40S, A10G, L4, T4'],
+  ['Parallel cloud generation', 'No more queues for your whole team'],
+  ['Full version history', 'With every workflow update'],
+  ['Collaboration made easy', 'Built for sharing with your team'],
+];
+
+const comfyFeatures = [
+  ['Full environment control', 'Install any custom node and model, and have it immediately available for your team.'],
+  ['Shareable workflows', 'If it works for you, it will work for them. Environment guaranteed.'],
+  ['Workflow versioning', 'Iterate safely with complete version history and one-click rollback.'],
+  ['Powerful GPUs, parallel execution', 'Give your team A100s and H100s. Generate at the same time with auto-scaling.'],
+];
+
+const playFeatures = [
+  ['Zero technical setup', 'Run complex workflows with the complexity hidden away.'],
+  ['Empower your creative team', 'Let artists and designers use your workflows without needing to know ComfyUI.'],
+  ['Product managers refine prompts', 'Test different text inputs to optimize results without touching nodes.'],
+  ['Simplified ComfyUI', 'Adjust what matters with sliders, text fields, and image uploads.'],
+];
+
+const apiFeatures = [
+  ['Auto-scaling GPU', 'GPU resources follow your traffic and scale to zero when idle.'],
+  ['Dev → Staging → Prod', 'Expose prompt fields, image uploads, or numerical parameters, and promote safely.'],
+  ['Private S3 integration', 'Upload real images to validate workflow performance.'],
+  ['Optimized cold starts', 'An extensive caching system minimizes startup latency.'],
+  ['Custom node API binding', 'ComfyDeploy External Input and Output nodes define your API interface.'],
+];
+
+const stories = [
+  {
+    quote:
+      'ComfyDeploy is the perfect match for ComfyUI. Being able to seamlessly build workflows with all your favorite custom nodes, instantly deploy APIs, and even test them in the built-in playground is a dream. It’s supercharged my ability to not only test, but deploy meaningful products!',
+    name: 'Fill',
+    role: 'ML Engineer, Mini Studio',
+    avatar: fillAvatar,
+  },
+  {
+    quote:
+      'ComfyDeploy delivers rock-solid infrastructure for lightning-fast inference and fully customizable generative workflows, and their team of engineers is always on hand to troubleshoot, iterate, and optimize, empowering us to deliver high-quality, scalable solutions to our clients every time.',
+    name: 'Allie',
+    role: 'Creative Tech, Silverside',
+    avatar: allieAvatar,
+  },
+];
+
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE.name, url: SITE.url },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'ComfyDeploy',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Web',
+    url: SITE.url,
+    description:
+      'Run ComfyUI in the cloud for teams: shareable workspaces, auto-generated playground UIs, and one-click production ComfyUI APIs on serverless GPUs.',
+    offers: { '@type': 'Offer', url: LINKS.pricing, price: '0', priceCurrency: 'USD' },
+  },
+];
+---
+
+<Base
+  title="ComfyDeploy: Cloud ComfyUI for Teams, Playground & API"
+  description="Run ComfyUI in the cloud on H100 and A100 GPUs. Share workflows with your team, turn them into simple apps, and deploy production ComfyUI APIs in one click."
+  jsonLd={jsonLd}
+>
+  <section class="hero">
+    <div class="wrap hero-in">
+      <a class="pill" href={LINKS.announcement}>ComfyDeploy is now fully open source. <span>Read the announcement</span></a>
+      <h1>ComfyUI for everyone on your team</h1>
+      <p class="lede">
+        Share your ComfyUI workflows with links. Use ComfyUI instantly in the cloud or share a simplified UI. Deploy production APIs in one click and scale
+        effortlessly, no engineering required.
+      </p>
+      <div class="ctas">
+        <a class="btn btn-primary" href={LINKS.start}>Get started</a>
+        <a class="btn btn-ghost" href={LINKS.demo}>Book a demo</a>
+      </div>
+    </div>
+    <div class="wrap graph-wrap">
+      <NodeGraph />
+    </div>
+    <div class="wrap">
+      <ul class="highlights">
+        {
+          highlights.map(([t, d]) => (
+            <li>
+              <strong>{t}</strong>
+              <span>{d}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Logos />
+
+  <section class="section" id="comfy">
+    <div class="wrap">
+      <div class="head">
+        <p class="product"><Image src={comfyLogo} alt="" width={28} height={28} /> ComfyUI Workspace</p>
+        <h2>Works once, works everywhere.</h2>
+        <p class="lede">Open the same ComfyUI environment on dedicated GPUs, with models, nodes, and settings all set.</p>
+      </div>
+      <div class="shot tilt">
+        <Image
+          src={workspaceShot}
+          alt="ComfyUI running in the browser on ComfyDeploy with an A100 session and a workflow graph"
+          widths={[640, 1100, 1600, 2200]}
+          sizes="(max-width: 1180px) 100vw, 1100px"
+        />
+      </div>
+      <div class="features four" data-spotlight>
+        {comfyFeatures.map(([t, d]) => <Feature title={t}>{d}</Feature>)}
+      </div>
+      <a class="more" href="/comfyui-online-workspace">Explore the ComfyUI online workspace</a>
+    </div>
+  </section>
+
+  <section class="section play" id="play">
+    <div class="wrap split">
+      <div class="head">
+        <p class="product">Playground</p>
+        <h2>Complex workflows, simple interfaces.</h2>
+        <p class="lede">Define inputs and outputs in your ComfyUI workflow and get a clean UI anyone can use.</p>
+        <div class="features stack" data-spotlight>
+          {playFeatures.map(([t, d]) => <Feature title={t}>{d}</Feature>)}
+        </div>
+        <a class="more" href="/comfyui-playground">See the ComfyUI Playground</a>
+      </div>
+      <div class="shot bleed tilt">
+        <Image
+          src={playgroundShot}
+          alt="Auto-generated ComfyDeploy Playground with image inputs, prompt field, and a gallery of results"
+          widths={[640, 1100, 1600]}
+          sizes="(max-width: 1000px) 100vw, 60vw"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="api" id="api">
+    <div class="wrap">
+      <div class="api-in">
+        <div class="head">
+          <p class="product">API</p>
+          <h2>Workflow to production API in one click.</h2>
+          <p class="lede">Build, deploy, and scale. Your ComfyUI graph becomes a versioned, auto-scaling endpoint.</p>
+          <div class="ctas">
+            <a class="btn btn-light" href={LINKS.apiDocs}>Read the API docs</a>
+            <a class="more on-dark" href="/comfyui-api">How the ComfyUI API works</a>
+          </div>
+        </div>
+        <CodeSample />
+      </div>
+      <div class="features five" data-spotlight>
+        {apiFeatures.map(([t, d]) => <Feature title={t}>{d}</Feature>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="head center">
+        <h2>Customer stories</h2>
+        <p class="lede">How experts and teams ship with ComfyDeploy.</p>
+      </div>
+      <div class="stories">
+        {
+          stories.map((s) => (
+            <figure>
+              <blockquote>“{s.quote}”</blockquote>
+              <figcaption>
+                <Image src={s.avatar} alt="" width={48} height={48} />
+                <span>
+                  <strong>{s.name}</strong>
+                  <span class="muted">{s.role}</span>
+                </span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-top: clamp(56px, 9vw, 112px);
+    overflow: clip;
+  }
+  .hero-in {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .pill {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4em;
+    padding: 6px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: var(--step--1);
+    color: var(--ink-2);
+    text-decoration: none;
+    margin-bottom: 28px;
+    transition: border-color 0.2s;
+  }
+  .pill span {
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .pill:hover {
+    border-color: var(--accent);
+  }
+  h1 {
+    font-size: var(--step-4);
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+    max-width: 11em;
+  }
+  .hero .lede {
+    margin-top: 24px;
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    align-items: center;
+    margin-top: 36px;
+  }
+  .hero .ctas {
+    justify-content: center;
+    gap: 12px;
+  }
+  .graph-wrap {
+    margin-top: clamp(56px, 8vw, 96px);
+  }
+  .highlights {
+    list-style: none;
+    margin: clamp(56px, 8vw, 96px) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-top: 1px solid var(--line);
+  }
+  .highlights li {
+    padding: 22px 18px 0 0;
+    display: grid;
+    gap: 4px;
+    align-content: start;
+  }
+  .highlights strong {
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .highlights span {
+    font-size: var(--step--1);
+    color: var(--ink-3);
+    line-height: 1.4;
+  }
+
+  .head {
+    max-width: 40rem;
+    margin-bottom: clamp(40px, 6vw, 64px);
+  }
+  .head.center {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .head.center .lede {
+    margin-inline: auto;
+  }
+  .head h2 {
+    font-size: var(--step-3);
+  }
+  .head .lede {
+    margin-top: 18px;
+  }
+  .product {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    color: var(--ink-2);
+    margin-bottom: 16px;
+  }
+  .product img {
+    border-radius: 7px;
+  }
+
+  .features {
+    display: grid;
+    gap: 0 32px;
+    margin-top: clamp(40px, 6vw, 72px);
+  }
+  .four {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .five {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .stack {
+    grid-template-columns: 1fr 1fr;
+    margin-top: 36px;
+  }
+
+  .more {
+    display: inline-block;
+    margin-top: 40px;
+    color: var(--accent);
+    font-weight: 500;
+    text-decoration: none;
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+    transition: background-size 0.3s;
+  }
+  .more:hover {
+    background-size: 100% 1px;
+  }
+
+  .play {
+    background: var(--bg-2);
+    overflow: clip;
+  }
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  .split .head {
+    margin-bottom: 0;
+  }
+  .bleed {
+    width: calc(100% + 18vw);
+  }
+
+  .api {
+    --bg: var(--panel);
+    --bg-2: #17171d;
+    --ink: var(--panel-ink);
+    --ink-2: #c7c7cf;
+    --ink-3: #8b8b96;
+    --line: #26262e;
+    --accent: #8a97ff;
+    background: var(--bg);
+    color: var(--ink);
+    padding-block: clamp(80px, 12vw, 160px);
+    color-scheme: dark;
+  }
+  .api-in {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  .api .head {
+    margin-bottom: 0;
+  }
+  .btn-light {
+    background: #fff;
+    color: #09090b;
+  }
+  .btn-light:hover {
+    background: var(--accent);
+    color: #fff;
+  }
+  .on-dark {
+    margin-top: 0;
+  }
+
+  .stories {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(24px, 4vw, 48px);
+  }
+  figure {
+    margin: 0;
+    padding: clamp(28px, 4vw, 44px);
+    border-radius: 24px;
+    background: var(--bg-2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+  }
+  blockquote {
+    margin: 0;
+    font-size: var(--step-1);
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+  }
+  figcaption {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  figcaption img {
+    border-radius: 999px;
+    filter: grayscale(1);
+  }
+  figcaption > span {
+    display: grid;
+    font-size: 0.9375rem;
+    line-height: 1.35;
+  }
+
+  /* Scroll-driven: screenshots settle flat as they enter. No JS; ignored where unsupported. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .tilt {
+        transform-origin: 50% 100%;
+        animation: settle linear both;
+        animation-timeline: view();
+        animation-range: entry 0% cover 40%;
+      }
+      @keyframes settle {
+        from {
+          transform: perspective(1400px) rotateX(14deg) scale(0.94);
+          opacity: 0.4;
+        }
+        to {
+          transform: none;
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .highlights,
+    .five {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .four {
+      grid-template-columns: 1fr 1fr;
+    }
+    .split,
+    .api-in {
+      grid-template-columns: 1fr;
+    }
+    .bleed {
+      width: 100%;
+    }
+  }
+  @media (max-width: 640px) {
+    .highlights,
+    .five,
+    .four,
+    .stack,
+    .stories {
+      grid-template-columns: 1fr;
+    }
+    .highlights li {
+      padding-top: 16px;
+    }
+  }
+</style>

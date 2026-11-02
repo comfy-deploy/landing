@@ -1,0 +1,76 @@
+---
+// Step 3 shared by the Workspace and Playground pages.
+import { Image } from 'astro:assets';
+import formShot from '../assets/playground-form-ui.png';
+---
+
+<li>
+  <h3><span>3</span>Share the link for instant team access</h3>
+  <div class="who">
+    <div class="card">
+      <p class="for">For ComfyUI experts</p>
+      <h4>Online ComfyUI workspace</h4>
+      <p>
+        Send the workspace link. Teammates open the identical ComfyUI editor with models and nodes preloaded, with zero local setup. Every run is logged with inputs,
+        outputs, latency, and cost for later review.
+      </p>
+    </div>
+    <div class="card">
+      <p class="for">For designers, PMs and clients</p>
+      <h4>Simplified ComfyUI Playground</h4>
+      <p>
+        A simple form with sliders and inputs, built for non-technical users. Each ComfyUI input becomes the right control (slider, text box, dropdown, file upload),
+        so anyone can run the workflow without touching nodes.
+      </p>
+      <div class="shot">
+        <Image src={formShot} alt="ComfyDeploy Playground form generated from ComfyUI workflow inputs" widths={[500, 900]} sizes="(max-width: 800px) 100vw, 520px" />
+      </div>
+    </div>
+  </div>
+  <div class="parallel">
+    <h4>No queues, no waiting: parallel generations</h4>
+    <p>
+      Each session gets a dedicated GPU instance, so cloud generation runs in parallel. ComfyUI experts tweak advanced nodes while designers fire prompts at the same
+      time, all within the same version-controlled workflow.
+    </p>
+  </div>
+</li>
+
+<style>
+  .who {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .card {
+    padding: clamp(24px, 3vw, 36px);
+    border-radius: 20px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+  }
+  .for {
+    font-size: var(--step--1);
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .card > p:not(.for) {
+    color: var(--ink-3);
+  }
+  .card .shot {
+    margin-top: 24px;
+  }
+  .parallel {
+    margin-top: 40px;
+    max-width: 44rem;
+  }
+  .parallel p {
+    color: var(--ink-3);
+  }
+  @media (max-width: 800px) {
+    .who {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

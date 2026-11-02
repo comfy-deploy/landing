@@ -1,0 +1,113 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import SubHero from '../components/SubHero.astro';
+import FeatureGroup from '../components/FeatureGroup.astro';
+import Steps from '../components/Steps.astro';
+import ShareStep from '../components/ShareStep.astro';
+import Faq from '../components/Faq.astro';
+import { faqJsonLd, breadcrumbJsonLd } from '../lib/schema';
+import graphShot from '../assets/comfyui-complex-graph.png';
+import formShot from '../assets/playground-form-ui.png';
+
+const launch = [
+  ['Auto-generated UI', 'Tagged inputs become sliders, text fields, dropdowns, and file uploads.'],
+  ['One-click publish', 'Create a share page with a unique URL. No local ComfyUI needed to test.'],
+  ['Autoscale in seconds', 'On-demand scaling, parallel runs, per-second billing. Scale to zero when idle.'],
+  ['Presets and locking', 'Expose only approved controls and lock advanced parameters for consistent results.'],
+];
+const teamwork = [
+  ['Staging → Production', 'Test safely in staging, then promote to production without interrupting live runs.'],
+  ['Roles and access', 'Invite creators and limited-access Playground users, with editor rights kept scoped.'],
+  ['Shared workspace', 'Everyone uses the same pinned nodes, models, and environment for reproducible results.'],
+  ['Version history and rollback', 'Track every change and roll back to a previous version in one click.'],
+];
+const scale = [
+  ['Usage analytics', 'Track run counts, popular parameters, and per-user activity, and tie GPU seconds to cost.'],
+  ['A/B and staging', 'Spin up dev, staging, or A/B branches without touching production.'],
+  ['Auto-scaling GPUs', 'Choose A100, H100, or default. Scale up on demand, then back to zero when idle.'],
+  ['Rollback triggers', 'Schedule updates and auto-revert if health checks fail.'],
+];
+const security = [
+  ['Compliance-ready roadmap', 'Designed with SOC 2, GDPR, and data residency needs in mind. Confirm current status with our team.'],
+  ['Private by default', 'Models and files stay in your workspace unless you choose to share them.'],
+  ['Secure cloud execution', 'All data is encrypted in transit, and storage is isolated per tenant.'],
+  ['SSO and MFA options', 'Integrate with your identity provider to enforce secure access.'],
+];
+
+const faqs: [string, string][] = [
+  [
+    'What is the Playground, and when should I use it instead of the Workspace?',
+    'The Playground auto-builds a simple UI from a ComfyUI workflow’s inputs, so PMs and designers can run it without touching nodes. Use the Workspace for building and the Playground for using.',
+  ],
+  ['How does the UI get generated from my ComfyUI graph?', 'Inputs are detected and turned into typed controls: text, numbers, images, dropdowns, and toggles.'],
+  ['Can I expose only safe parameters and hide the rest?', 'Yes. Lock or hide advanced fields, set ranges and defaults, and publish a minimal set of controls.'],
+  ['How do I cap spend from Playground usage?', 'Per-user and org quotas plus warm settings keep cost predictable. Runs inherit the workspace template.'],
+  ['Can I turn a Playground into an API later without rebuilding?', 'Yes. Promote the same workflow and template to a production API endpoint.'],
+];
+---
+
+<Base
+  title="ComfyUI Playground: Turn Workflows into Simple AI Apps"
+  description="Turn complex ComfyUI workflows into simple AI apps. Inputs become sliders and fields automatically, so designers and PMs can run them. Share securely with SSO and roles."
+  jsonLd={[faqJsonLd(faqs), breadcrumbJsonLd('ComfyUI Playground', '/comfyui-playground')]}
+>
+  <SubHero
+    from="Complex ComfyUI workflows"
+    title="Simple AI apps your whole team can use"
+    points={['A simple ComfyUI UI for designers and PMs', 'Inputs auto-generated from nodes to controls', 'Share ComfyUI apps securely with SSO and RBAC']}
+  />
+
+  <section class="section">
+    <div class="wrap duo">
+      <div class="head">
+        <h2>ComfyUI is amazing for experts, but confusing for everyone else.</h2>
+        <p class="lede">
+          The learning curve is steep, and installs are fragile because of custom nodes, Python dependencies, and model paths. Sharing PNG or JSON workflows still means
+          recreating an identical environment, so results often work on your machine but not for teammates. And everything funnels through a single local GPU and
+          queue, slowing reviews and delivery.
+        </p>
+      </div>
+      <div class="shot">
+        <Image src={graphShot} alt="A dense ComfyUI node graph with many connected nodes" widths={[600, 1000, 1600]} sizes="(max-width: 900px) 100vw, 540px" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section answer">
+    <div class="wrap duo flip">
+      <div class="shot">
+        <Image src={formShot} alt="The same workflow as a ComfyDeploy Playground form with prompt fields and an image result" widths={[600, 1000]} sizes="(max-width: 900px) 100vw, 540px" />
+      </div>
+      <div class="head">
+        <h2>Your workflow becomes a simple AI web app anyone can use.</h2>
+        <p class="lede">
+          Share a link and everyone runs the same versioned workspace for consistent results. Inputs and outputs appear as clear fields, with roles, logs, and
+          guardrails for reliability. Cloud GPUs run jobs in parallel, and you can promote the workflow to a production API in one click.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section groups">
+    <div class="wrap">
+      <FeatureGroup title="Instant launch and sharing" lede="Turn any ComfyUI graph into a simple app your team can run immediately." items={launch} />
+      <FeatureGroup title="Built-in teamwork" lede="Share, edit, and run together without breaking anything." items={teamwork} />
+      <FeatureGroup title="Visibility and control at scale" lede="See usage, ship safely, and autoscale GPUs." items={scale} />
+      <FeatureGroup title="Enterprise-grade security" lede="Protect your workflows, models, and data." items={security} />
+    </div>
+  </section>
+
+  <Steps>
+    <ShareStep />
+  </Steps>
+
+  <Faq items={faqs} />
+</Base>
+
+<style>
+  .answer,
+  .groups {
+    padding-top: 0;
+  }
+</style>
