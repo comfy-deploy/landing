@@ -19,11 +19,6 @@
       "permanent": true
     },
     {
-      "source": "/api/:path*",
-      "destination": "https://www.comfydeploy.ing/api/:path*",
-      "permanent": false
-    },
-    {
       "source": "/machines/:path*",
       "destination": "https://app.comfydeploy.com/machines",
       "permanent": false
