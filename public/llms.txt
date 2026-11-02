@@ -9,3 +9,4 @@
 - [Pricing](https://app.comfydeploy.com/pricing)
 - [Blog](https://www.comfydeploy.com/blog): ComfyUI tutorials and release notes.
 - [GitHub](https://github.com/BennyKok/comfyui-deploy): source code.
+- [Full text for LLMs](https://www.comfydeploy.com/llms-full.txt): every blog post as markdown.
