@@ -40,9 +40,10 @@ const ld = [org, ...(jsonLd ? [jsonLd].flat() : [])];
     {
       authRedirect && (
         <script is:inline>
-          // Clerk sets __client_uat (optionally suffixed) on .comfydeploy.com: a unix timestamp when signed in, 0 when signed out.
-          // Framer loaded the whole Clerk SDK (~1.8MB) to do this; a cookie read is enough. ?stay skips it.
-          if (/(?:^|;\s*)__client_uat(?:_[\w-]+)?=[1-9]/.test(document.cookie) && !/[?&]stay\b/.test(location.search))
+          // Clerk sets __client_uat_<suffix> on .comfydeploy.com: a unix timestamp when signed in, 0 when signed out.
+          // Only the prod instance's cookie counts (suffix = sha1(pk_live_…) base64url[0:8]); staging/dev instances
+          // leave their own stale cookies on the same domain. Framer loaded the whole Clerk SDK (~1.8MB) for this. ?stay skips it.
+          if (/(?:^|;\s*)__client_uat_Qu0VI-qD=[1-9]/.test(document.cookie) && !/[?&]stay\b/.test(location.search))
             location.replace('https://app.comfydeploy.com/');
         </script>
       )
