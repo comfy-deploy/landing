@@ -24,16 +24,6 @@
       "permanent": false
     },
     {
-      "source": "/workflow/:path*",
-      "destination": "https://app.comfydeploy.com/workflows",
-      "permanent": false
-    },
-    {
-      "source": "/workflows/:path*",
-      "destination": "https://app.comfydeploy.com/workflows",
-      "permanent": false
-    },
-    {
       "source": "/models/:path*",
       "destination": "https://app.comfydeploy.com/models",
       "permanent": false
