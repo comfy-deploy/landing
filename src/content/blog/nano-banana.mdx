@@ -1,0 +1,78 @@
+---
+title: "Google Nano Banana: Gemini 2.5 Flash Image Editing in ComfyUI"
+description: "Google Nano Banana (Gemini 2.5 Flash Image) edits images from text prompts. See its features, pricing, a ComfyUI workflow, and a comparison with Qwen and Kontext."
+date: 2025-08-27
+category: "Release"
+cover: "./nano-banana/cover.jpg"
+---
+
+Google Nano Banana is the nickname for the image editing capabilities of Gemini 2.5 Flash Image, which Google released on August 26, 2025. It edits an image from a plain-language prompt, keeps a character recognizable across edits, and can combine elements from several images into one scene.
+
+![Google Nano Banana AI image editing](./nano-banana/cover.jpg)
+
+Credit: [@minux302](https://x.com/minux302/status/1960358882100039859)
+
+## What is Google Nano Banana?
+
+Google describes Nano Banana as a major upgrade to image editing in Gemini. You describe the change you want, such as a new background or a different expression, and the model applies it to your image without manual masking or layer work.
+
+According to Google, the model keeps character identity and scene coherence across multiple editing rounds, and it can blend elements from different images. This puts it in direct competition with open editing models such as Qwen Image Edit and FLUX.1 Kontext. You can read Google's description in the [official blog post](https://blog.google/intl/en-mena/product-updates/explore-get-answers/nano-banana-image-editing-in-gemini-just-got-a-major-upgrade/).
+
+## Key features of Nano Banana
+
+- **Natural language editing.** Change an image with a short description, for example "change the background to a forest" or "make the subject smile and adjust the lighting".
+- **Character consistency.** The subject keeps recognizable features across edits, even when the angle, lighting, or background changes.
+- **Multi-image fusion.** You can blend several images into one scene, which is useful for composites or for adding an element from another photo.
+- **Multi-turn editing.** You can refine an image with successive prompts and build up detailed edits in layers.
+- **ComfyUI integration.** ComfyUI supports the model through its API nodes, for both text-to-image and image-to-image workflows.
+
+## Nano Banana pricing and availability
+
+Developers and enterprises can use Nano Banana through three Google platforms:
+
+- **Gemini API.** Direct API access for developers.
+- **Google AI Studio.** An interactive development environment.
+- **Vertex AI.** Google Cloud's enterprise platform.
+
+Google lists developer pricing at $30 per million output tokens, which comes to about $0.039 per image.
+
+## Nano Banana ComfyUI workflow
+
+ComfyUI supports Nano Banana (Gemini 2.5 Flash Image) through native API nodes, so you can run Google's editing model on the ComfyUI canvas next to your other nodes. Both text-to-image and image-to-image workflows are supported.
+
+![Output from the Nano Banana ComfyUI workflow](./nano-banana/nano-banana-workflow.webp)
+
+The Nano Banana workflow recreates a movie still from a reference. It needs a `GEMINI_API_KEY`. Generations are free, but Google restricts access in some locations and during periods of high demand. Open it on the [Nano Banana model page](/workflows/model/nano-banana), where you can run it or fork it into your own project.
+
+For more ready-made examples, see these workflows:
+
+- [Character template](/workflows/character-template-nano-banana)
+- [Figurine sculptures in 3D](/workflows/figurine-sculptures-3d-nano-banana)
+- [Photo restoration](/workflows/photo-restoration-nano-banana)
+- [Virtual try-on](/workflows/try-on-nano-banana)
+- [Strategy guide with layout](/workflows/strategy-guide-nano-banana-1)
+
+## Compare Nano Banana with other image editing models
+
+You can run the same prompt through Gemini 2.5 Flash Image (Nano Banana), Qwen Image Edit, and Flux Pro Kontext in our [interactive model comparison tool](https://compare.comfydeploy.com/?prompt=A+conceptual+photo+illustration+showing+a+glowing,+holographic+GPU+processor+at+its+center.+A+futuristic+camera+lens+is+focused+on+it,+capturing+its+active+state+as+a+shimmering,+persistent+%27snapshot%27+of+light.+On+one+side,+an+icon+of+a+snowflake+is+shattering,+and+on+the+other,+an+icon+of+a+flame+is+burning+brightly,+symbolizing+the+transition+from+a+%27cold+start%27+to+an+instantly+warm+one.+The+background+is+a+dark,+clean+server+room+environment.+Style+is+hyper-realistic+with+digital+art+elements.&type=image-edit&models=gemini-25-flash-image/edit,qwen-image-edit,flux-pro/kontext).
+
+## Nano Banana vs Qwen Image Edit vs FLUX.1 Kontext
+
+| Feature | Google Nano Banana | Qwen Image Edit | FLUX.1 Kontext |
+| --- | --- | --- | --- |
+| Architecture | Gemini 2.5 Flash multimodal | 20B parameters with VAE control | 12B parameter diffusion transformer |
+| Natural language editing | Yes, advanced natural language prompts | Yes, text-based semantic editing | Yes, context-aware text inputs |
+| Character consistency | Yes, identity preserved across edits | Yes, strong identity preservation | Yes, consistent across scenes |
+| Multi-image fusion | Yes, element integration | Limited multi-image support | Yes, multi-image context editing |
+| Multi-turn editing | Yes, iterative refinement | Single-pass optimization | Yes, multi-turn iterative editing |
+| Platform integration | Gemini API, AI Studio, Vertex AI, ComfyUI (native nodes) | ComfyUI, API endpoints | ComfyUI, API endpoints |
+
+## Which image editing model should you choose?
+
+**Choose Nano Banana for natural language workflows.** It suits intuitive editing commands, multi-image fusion, and teams that already use Google tools, such as content creators and businesses.
+
+**Choose Qwen Image Edit for precise control.** It fits professional workflows that need exact element changes and bilingual text editing, such as graphic design. Read our [Qwen Image Edit guide](/blog/qwen-image-edit) for details.
+
+**Choose FLUX.1 Kontext for rapid iteration.** It suits creative experimentation with fast processing and multi-turn editing, which helps artists and developers who need quick results. Read our [FLUX.1 Kontext Dev guide](/blog/flux-kontext-dev) and browse the [Flux Kontext workflows](/workflows/model/flux-kontext).
+
+Each model has different strengths, so run the same prompt through each one to see which fits your workflow.
