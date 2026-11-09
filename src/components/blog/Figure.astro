@@ -1,0 +1,42 @@
+---
+// Image with a visible source credit. Use for any image we did not make ourselves.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  /** Who made the image, e.g. "Black Forest Labs". */
+  credit: string;
+  /** Where the image was published. */
+  href?: string;
+  caption?: string;
+}
+const { src, alt, credit, href, caption } = Astro.props;
+---
+
+<figure class="fig">
+  <Image src={src} alt={alt} widths={[640, 1024, 1400]} sizes="(min-width: 800px) 760px, 100vw" />
+  <figcaption>
+    {caption && <span>{caption}</span>}
+    <span class="credit">Image: {href ? <a href={href} target="_blank" rel="noopener">{credit}</a> : credit}</span>
+  </figcaption>
+</figure>
+
+<style>
+  .fig {
+    margin-inline: 0;
+  }
+  figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25em 0.75em;
+    margin-top: 10px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+  .credit a {
+    color: inherit;
+  }
+</style>
