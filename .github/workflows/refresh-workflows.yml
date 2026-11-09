@@ -1,0 +1,29 @@
+# Daily: pull newly shared ComfyDeploy templates' covers into src/assets/workflows.
+# If any are new, commit them; the push to main makes Vercel rebuild, which also fetches the new templates from the API.
+name: Refresh workflow templates
+on:
+  schedule:
+    - cron: '17 3 * * *' # 03:17 UTC daily
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: refresh-workflows
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Sync covers
+        run: bun scripts/sync-workflow-covers.mjs
+      - name: Commit new covers
+        run: |
+          git add src/assets/workflows
+          if git diff --cached --quiet; then echo "No new templates."; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: add covers for new workflow templates"
+          git push
