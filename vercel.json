@@ -14,6 +14,61 @@
   ],
   "redirects": [
     {
+      "source": "/share/workflow/:slug",
+      "destination": "https://www.comfydeploy.com/workflows/:slug",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/:slug",
+      "destination": "https://www.comfydeploy.com/workflows/:slug",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/news",
+      "destination": "https://www.comfydeploy.com/blog",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/news/:slug",
+      "destination": "https://www.comfydeploy.com/blog/:slug",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "destination": "https://www.comfydeploy.com/workflows",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
       "source": "/sitemap.xml",
       "destination": "/sitemap-index.xml",
       "permanent": true

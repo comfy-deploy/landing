@@ -1,0 +1,16 @@
+---
+import Gallery from '../../components/workflows/Gallery.astro';
+import { getWorkflows } from '../../lib/workflows';
+
+const all = await getWorkflows();
+---
+
+<Gallery
+  all={all}
+  items={all}
+  path="/workflows"
+  title="ComfyUI Workflows: Ready-to-Run Templates | ComfyDeploy"
+  description={`${all.length} free ComfyUI workflow templates for Flux, Qwen-Image, Wan 2.2 and more. Run them on cloud GPUs, download the JSON, or deploy as an API.`}
+  h1="ComfyUI workflows"
+  lede={`${all.length} ready-to-run templates for image, video, 3D and audio. Open one in ComfyDeploy and run it on a cloud GPU, or download the workflow JSON.`}
+/>

@@ -1,0 +1,25 @@
+---
+import Gallery from '../../../components/workflows/Gallery.astro';
+import { facets, getWorkflows, TASK_LABEL, type Task } from '../../../lib/workflows';
+
+export async function getStaticPaths() {
+  const all = await getWorkflows();
+  return facets(all).tasks.map(([task]) => ({ params: { task }, props: { task } }));
+}
+const { task } = Astro.props as { task: Task };
+const all = await getWorkflows();
+const items = all.filter((w) => w.tasks.includes(task));
+const label = TASK_LABEL[task];
+const path = `/workflows/task/${task}`;
+---
+
+<Gallery
+  all={all}
+  items={items}
+  path={path}
+  crumb={label}
+  title={`${label} ComfyUI Workflows | ComfyDeploy`}
+  description={`${items.length} ${label.toLowerCase()} workflows for ComfyUI, ready to run on cloud GPUs. Open them in ComfyDeploy, download the JSON, or deploy as an API.`}
+  h1={`${label} workflows`}
+  lede={`${items.length} ComfyUI templates for ${label.toLowerCase()}. Open one in ComfyDeploy to run it on a cloud GPU, or download the workflow JSON.`}
+/>

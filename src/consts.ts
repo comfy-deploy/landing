@@ -19,6 +19,7 @@ export const LINKS = {
 export const NAV = [
   { href: '/comfyui-online-workspace', label: 'Workspace' },
   { href: '/comfyui-playground', label: 'Playground' },
+  { href: '/workflows', label: 'Workflows' },
   { href: '/comfyui-api', label: 'API' },
   { href: LINKS.docs, label: 'Docs' },
   { href: LINKS.pricing, label: 'Pricing' },

@@ -1,0 +1,24 @@
+---
+import Gallery from '../../../components/workflows/Gallery.astro';
+import { facets, getWorkflows, slugify } from '../../../lib/workflows';
+
+export async function getStaticPaths() {
+  const all = await getWorkflows();
+  return facets(all).families.map(([family]) => ({ params: { family: slugify(family) }, props: { family } }));
+}
+const { family } = Astro.props;
+const all = await getWorkflows();
+const items = all.filter((w) => w.family === family);
+const path = `/workflows/model/${slugify(family)}`;
+---
+
+<Gallery
+  all={all}
+  items={items}
+  path={path}
+  crumb={family}
+  title={`${family} ComfyUI Workflows | ComfyDeploy`}
+  description={`${items.length} ready-to-run ${family} workflows for ComfyUI. Run them on cloud GPUs with ComfyDeploy, download the JSON, or deploy them as an API.`}
+  h1={`${family} workflows`}
+  lede={`${items.length} ${family} templates for ComfyUI. Open one in ComfyDeploy to run it on a cloud GPU, or download the workflow JSON.`}
+/>
