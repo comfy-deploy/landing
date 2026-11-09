@@ -432,17 +432,6 @@
       "permanent": true
     },
     {
-      "source": "/share/workflow/product-generatorv2",
-      "destination": "https://www.comfydeploy.com/workflows",
-      "has": [
-        {
-          "type": "host",
-          "value": "studio.comfydeploy.com"
-        }
-      ],
-      "permanent": true
-    },
-    {
       "source": "/share/workflow/:slug",
       "destination": "https://www.comfydeploy.com/workflows/:slug",
       "has": [

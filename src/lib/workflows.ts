@@ -6,9 +6,8 @@ import type { ImageMetadata } from 'astro';
 import { WORKFLOW_FAMILIES, WORKFLOW_TASKS } from '../content.config';
 
 const API = 'https://api.comfydeploy.com/api/shared-workflows';
-// Kept off the site: img2lora is marked broken by its author; both embed third-party API keys in node widgets
-// (rotate + strip them in the template, then remove from this list).
-const HIDDEN = new Set(['img2lora', 'product-generatorv2']);
+// Kept off the site: img2lora is marked broken by its author.
+const HIDDEN = new Set(['img2lora']);
 const MODEL_EXT = /\.(safetensors|ckpt|pt|pth|bin|gguf|sft|onnx)$/i;
 
 export type Family = (typeof WORKFLOW_FAMILIES)[number];
