@@ -56,11 +56,17 @@ const jsonLd = [
 
     <nav class="filters" aria-label="Filter workflows">
       <div class="row">
-        <a href="/workflows" aria-current={cur('/workflows')}>All <span>{all.length}</span></a>
-        {families.map(([f, n]) => <a href={`/workflows/model/${slugify(f)}`} aria-current={cur(`/workflows/model/${slugify(f)}`)}>{f} <span>{n}</span></a>)}
+        <b>Model</b>
+        <div class="chips">
+          <a href="/workflows" aria-current={cur('/workflows')}>All <span>{all.length}</span></a>
+          {families.map(([f, n]) => <a href={`/workflows/model/${slugify(f)}`} aria-current={cur(`/workflows/model/${slugify(f)}`)}>{f} <span>{n}</span></a>)}
+        </div>
       </div>
       <div class="row">
-        {tasks.map(([t, n]) => <a href={`/workflows/task/${t}`} aria-current={cur(`/workflows/task/${t}`)}>{TASK_LABEL[t]} <span>{n}</span></a>)}
+        <b>Task</b>
+        <div class="chips">
+          {tasks.map(([t, n]) => <a href={`/workflows/task/${t}`} aria-current={cur(`/workflows/task/${t}`)}>{TASK_LABEL[t]} <span>{n}</span></a>)}
+        </div>
       </div>
     </nav>
 
@@ -112,18 +118,39 @@ const jsonLd = [
     margin-bottom: clamp(32px, 4vw, 48px);
   }
   .row {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    align-items: start;
+  }
+  .row b {
+    padding-top: 8px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--ink-3);
+  }
+  .chips {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    /* bleed to the edge on phones so chips can scroll under the gutter */
-    margin-inline: calc(var(--gutter) * -1);
-    padding-inline: var(--gutter);
   }
-  .row::-webkit-scrollbar {
-    display: none;
+  /* Phones: one swipeable line per row, fading out at the edge instead of a hard cut */
+  @media (max-width: 700px) {
+    .row {
+      grid-template-columns: 44px minmax(0, 1fr);
+    }
+    .chips {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin-right: calc(var(--gutter) * -1);
+      padding-right: var(--gutter);
+      mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent);
+    }
+    .chips::-webkit-scrollbar {
+      display: none;
+    }
   }
-  .row a {
+  .chips a {
     flex: none;
     display: inline-flex;
     align-items: center;
@@ -138,20 +165,20 @@ const jsonLd = [
     color: var(--ink-2);
     transition: border-color 0.15s, color 0.15s, background-color 0.15s;
   }
-  .row a span {
+  .chips a span {
     font: 12px var(--mono);
     color: var(--ink-3);
   }
-  .row a:hover {
+  .chips a:hover {
     border-color: var(--ink-3);
     color: var(--ink);
   }
-  .row a[aria-current='page'] {
+  .chips a[aria-current='page'] {
     background: var(--ink);
     border-color: var(--ink);
     color: var(--bg);
   }
-  .row a[aria-current='page'] span {
+  .chips a[aria-current='page'] span {
     color: inherit;
     opacity: 0.6;
   }
@@ -165,6 +192,9 @@ const jsonLd = [
   }
   .grid li {
     display: flex;
+    /* skip rendering off-screen cards until they scroll near (cards are ~420px tall) */
+    content-visibility: auto;
+    contain-intrinsic-size: auto 420px;
   }
   .grid li > :global(*) {
     flex: 1;
