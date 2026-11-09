@@ -1,0 +1,70 @@
+---
+title: "FLUX 3 Image Klein in ComfyUI: 5.6B Open Weights"
+description: "FLUX 3 Image Klein is a 5.6B open-weights model from Black Forest Labs with 4K output and bounding boxes. See specs, a ComfyUI setup, and how to run it in the cloud."
+date: 2026-11-09
+category: "Release"
+---
+
+FLUX 3 Image Klein is the compact, open-weights model in the FLUX 3 family from Black Forest Labs. It has 5.6 billion parameters, and it runs natively in ComfyUI. Klein keeps the layout controls of the larger FLUX 3 Image model, including bounding boxes, in a size that fits much smaller GPUs.
+
+## What is FLUX 3 Image Klein?
+
+According to the ComfyUI team, Klein draws on what Black Forest Labs learned across the image, video, and audio models in the FLUX 3 family. It ships in two forms:
+
+- **Base.** The full undistilled checkpoint, intended for fine-tuning, further training, and research.
+- **Distilled.** A lower-latency variant aimed at fast generation. On Hugging Face the distilled files carry an `-sd` suffix.
+
+You can read the full announcement on the [ComfyUI blog](https://blog.comfy.org/p/flux-3-image-klein-in-comfyui-56b). Check the model card on Hugging Face for the license terms before you use outputs commercially, because the base and distilled releases may be licensed differently.
+
+## Key features
+
+The ComfyUI announcement lists these capabilities:
+
+- **Native 4K output.** Images are generated at 4K, not upscaled to it.
+- **Prompt upsampler.** A separate model expands a short prompt into a detailed one before generation.
+- **Multi-reference generation and editing.** You can feed the model several reference images, and subjects stay recognizable across edits and inputs.
+- **Bounding boxes.** You mark regions on the canvas to set composition and layout before the model fills them in.
+- **Text rendering and editing.** The model writes text into an image and edits text that is already there.
+- **Reference-based style transfer.** It takes the look of a reference while keeping the content and composition you asked for.
+
+## FLUX 3 Image Klein ComfyUI workflow
+
+The setup follows the usual ComfyUI pattern:
+
+1. Update ComfyUI to the latest version.
+2. Download the weights from Hugging Face. Pick base or distilled and place them in your models folder.
+3. Open the FLUX 3 Image Klein template from the Templates panel.
+4. Write your prompt, attach reference images if you are editing, and run.
+
+For a graph you build yourself, start from the [Flux text-to-image workflow](/workflows/flux-text-to-image-native) to see how a native Flux graph is wired, then swap in the Klein loaders and nodes from the template. Browse more graphs in the [Flux workflows](/workflows/model/flux) collection.
+
+## Speed on consumer GPUs
+
+ComfyUI reports that pairing INT8 ConvRot quantization with the step-distilled Klein model makes 1024x1024 text-to-image generation 4.3x to 9.3x faster than a BF16, 50-step baseline. The largest gains are on consumer cards: according to ComfyUI, an image that took 71 seconds on an RTX 5070 now takes under 8, and on an RTX 4070 the time drops from 78 seconds to under 9. These are vendor-reported figures, so measure your own graph before you plan capacity around them.
+
+## FLUX 3 Image Klein vs Qwen-Image 2.1
+
+Both models are open-weight and aimed at generation plus reference-based editing, so they are natural rivals. In Black Forest Labs' internal evaluations, as relayed by ComfyUI, Klein scores above Qwen-Image 2.1 on text-to-image and multi-reference generation. Treat that as a starting point and not a verdict, since the evaluations are not independent.
+
+The practical differences from the published specs:
+
+- **Size.** Klein is 5.6B parameters. Qwen-Image 2.1 is 7B.
+- **Layout control.** Klein supports bounding boxes for placing elements.
+- **Transparency.** Qwen-Image 2.1 outputs a real alpha channel, which Klein's announcement does not mention. Choose it if you need cutouts.
+- **Fine-tuning.** Klein ships an undistilled base checkpoint for training.
+
+If you rely on LoRAs trained for earlier Flux or Qwen releases, expect to retrain, because they were built for different architectures.
+
+## How to run FLUX 3 Image Klein in the cloud
+
+A 5.6B model is small enough for a mid-range GPU, so you do not need top-end hardware for 1024x1024 work. On ComfyDeploy you can pick the GPU class per machine. A 24 GB class card is a reasonable starting point for the distilled checkpoint at standard resolutions. Native 4K output, multiple references, and the base checkpoint use more memory, so move up to a 48 GB class card for those. We have not benchmarked Klein ourselves, and the VRAM needs depend on precision, resolution, and the number of references.
+
+## Run it on ComfyDeploy
+
+ComfyDeploy runs ComfyUI workflows on cloud GPUs, so you do not manage drivers, model downloads, or idle machines.
+
+1. Import the Klein template into a ComfyDeploy project and add the model files.
+2. Test it in the [ComfyUI playground](/comfyui-playground), and share it as a link if you want others to try it.
+3. Deploy it as an endpoint through the [ComfyUI API](/comfyui-api) so your app can send a prompt and reference images and get the image back.
+
+Teams that generate product shots, posters with embedded text, or consistent characters can batch these requests across GPUs and pay for the time they use.
