@@ -5,8 +5,9 @@
 - [ComfyUI Online Workspace](https://www.comfydeploy.com/comfyui-online-workspace): ComfyUI in the browser on managed GPUs with pinned custom nodes, shared models, version control, and one-click rollback.
 - [ComfyUI Playground](https://www.comfydeploy.com/comfyui-playground): turns a ComfyUI workflow into a simple web app with auto-generated inputs for designers and PMs.
 - [ComfyUI API](https://www.comfydeploy.com/comfyui-api): deploys a ComfyUI workflow as a production API with autoscaling serverless GPUs, staging/production, and TypeScript/Python SDKs.
+- [ComfyUI workflows](https://www.comfydeploy.com/workflows): ready-to-run ComfyUI workflow templates (Flux, Qwen-Image, Wan 2.2, and more) with models, custom nodes and GPU for each.
 - [Docs](https://docs.comfydeploy.com/): product and API documentation.
 - [Pricing](https://app.comfydeploy.com/pricing)
 - [Blog](https://www.comfydeploy.com/blog): ComfyUI tutorials and release notes.
 - [GitHub](https://github.com/BennyKok/comfyui-deploy): source code.
-- [Full text for LLMs](https://www.comfydeploy.com/llms-full.txt): every blog post as markdown.
+- [Full text for LLMs](https://www.comfydeploy.com/llms-full.txt): every blog post and workflow template as markdown.

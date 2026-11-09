@@ -1,0 +1,222 @@
+---
+// Gallery shared by /workflows and its model/task filter pages. Filters are plain links to real pages
+// (indexable, no JS); the active one is marked with aria-current.
+import Base from '../../layouts/Base.astro';
+import WorkflowCard from './WorkflowCard.astro';
+import { SITE } from '../../consts';
+import { facets, slugify, TASK_LABEL, type Workflow } from '../../lib/workflows';
+
+interface Props {
+  all: Workflow[];
+  items: Workflow[];
+  title: string;
+  description: string;
+  h1: string;
+  lede: string;
+  path: string;
+  crumb?: string;
+}
+const { all, items, title, description, h1, lede, path, crumb } = Astro.props;
+const { families, tasks } = facets(all);
+const here = Astro.url.pathname.replace(/\.html$/, '');
+const cur = (href: string) => (here === href ? 'page' : undefined);
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: h1,
+    description,
+    url: SITE.url + path,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: items.length,
+      itemListElement: items.map((w, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE.url}/workflows/${w.slug}`, name: w.title })),
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Workflows', item: `${SITE.url}/workflows` },
+      ...(crumb ? [{ '@type': 'ListItem', position: 3, name: crumb, item: SITE.url + path }] : []),
+    ],
+  },
+];
+---
+
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <div class="wrap gallery">
+    <header class="top">
+      {crumb && <nav aria-label="Breadcrumb" class="crumbs"><a href="/workflows">Workflows</a></nav>}
+      <h1>{h1}</h1>
+      <p class="lede">{lede}</p>
+    </header>
+
+    <nav class="filters" aria-label="Filter workflows">
+      <div class="row">
+        <b>Model</b>
+        <div class="chips">
+          <a href="/workflows" aria-current={cur('/workflows')}>All <span>{all.length}</span></a>
+          {families.map(([f, n]) => <a href={`/workflows/model/${slugify(f)}`} aria-current={cur(`/workflows/model/${slugify(f)}`)}>{f} <span>{n}</span></a>)}
+        </div>
+      </div>
+      <div class="row">
+        <b>Task</b>
+        <div class="chips">
+          {tasks.map(([t, n]) => <a href={`/workflows/task/${t}`} aria-current={cur(`/workflows/task/${t}`)}>{TASK_LABEL[t]} <span>{n}</span></a>)}
+        </div>
+      </div>
+    </nav>
+
+    <ul class="grid">
+      {items.map((w, i) => <li><WorkflowCard w={w} eager={i < 3} /></li>)}
+    </ul>
+
+    <aside class="cta">
+      <div>
+        <h2>Bring your own workflow</h2>
+        <p>Import any ComfyUI workflow, pick a GPU, and share it as a playground or deploy it as an API.</p>
+      </div>
+      <a class="btn btn-primary" href="https://app.comfydeploy.com">Start building</a>
+    </aside>
+  </div>
+</Base>
+
+<style>
+  .gallery {
+    padding-block: clamp(56px, 9vw, 112px) clamp(80px, 12vw, 160px);
+  }
+  .top {
+    max-width: 46rem;
+    margin-bottom: clamp(32px, 5vw, 56px);
+  }
+  .crumbs {
+    font-size: var(--step--1);
+    margin-bottom: 20px;
+  }
+  .crumbs a {
+    color: var(--ink-3);
+    text-decoration: none;
+  }
+  .crumbs a::before {
+    content: '← ';
+  }
+  .crumbs a:hover {
+    color: var(--ink);
+  }
+  h1 {
+    font-size: var(--step-4);
+  }
+  .top .lede {
+    margin-top: 20px;
+  }
+  .filters {
+    display: grid;
+    gap: 10px;
+    margin-bottom: clamp(32px, 4vw, 48px);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    align-items: start;
+  }
+  .row b {
+    padding-top: 8px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--ink-3);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  /* Phones: one swipeable line per row, fading out at the edge instead of a hard cut */
+  @media (max-width: 700px) {
+    .row {
+      grid-template-columns: 44px minmax(0, 1fr);
+    }
+    .chips {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin-right: calc(var(--gutter) * -1);
+      padding-right: var(--gutter);
+      mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent);
+    }
+    .chips::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .chips a {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding-inline: 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg);
+    font-size: 0.9375rem;
+    text-decoration: none;
+    color: var(--ink-2);
+    transition: border-color 0.15s, color 0.15s, background-color 0.15s;
+  }
+  .chips a span {
+    font: 12px var(--mono);
+    color: var(--ink-3);
+  }
+  .chips a:hover {
+    border-color: var(--ink-3);
+    color: var(--ink);
+  }
+  .chips a[aria-current='page'] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
+  }
+  .chips a[aria-current='page'] span {
+    color: inherit;
+    opacity: 0.6;
+  }
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: clamp(16px, 2vw, 24px);
+  }
+  .grid li {
+    display: flex;
+    /* skip rendering off-screen cards until they scroll near (cards are ~420px tall) */
+    content-visibility: auto;
+    contain-intrinsic-size: auto 420px;
+  }
+  .grid li > :global(*) {
+    flex: 1;
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: clamp(56px, 8vw, 96px);
+    padding: clamp(28px, 4vw, 44px);
+    border: 1px solid var(--line);
+    border-radius: calc(var(--radius) + 4px);
+    background: var(--bg-2);
+  }
+  .cta h2 {
+    font-size: var(--step-2);
+  }
+  .cta p {
+    margin-top: 10px;
+    color: var(--ink-2);
+    max-width: 36em;
+  }
+</style>

@@ -14,6 +14,490 @@
   ],
   "redirects": [
     {
+      "source": "/share/playground/:user/3d-product-qwen-image",
+      "destination": "https://www.comfydeploy.com/workflows/3d-product-qwen-image",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/3d-product-qwen-image-edit",
+      "destination": "https://www.comfydeploy.com/workflows/3d-product-qwen-image-edit",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/add-a-character-to-the-scene",
+      "destination": "https://www.comfydeploy.com/workflows/character-and-scene-integration",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/banana",
+      "destination": "https://www.comfydeploy.com/workflows/model/nano-banana",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/basic-text-to-image-with-the-hunyuanimage-21-model",
+      "destination": "https://www.comfydeploy.com/workflows/basic-text-to-image-with-the-hunyuanimage-21-model",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/branding-product-shot-with-seeddream-v4-dual-input",
+      "destination": "https://www.comfydeploy.com/workflows/branding-product-shot-with-seeddream-v4-dual-input",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/character-template-nano-banana",
+      "destination": "https://www.comfydeploy.com/workflows/character-template-nano-banana",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/dual-qwen-edit",
+      "destination": "https://www.comfydeploy.com/workflows/dual-qwen-edit",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/faster-kontextdev-edit-two-images-with-nunchaku",
+      "destination": "https://www.comfydeploy.com/workflows/faster-kontextdev-edit-two-images-with-nunchaku",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/figurine-3d-nano-banana",
+      "destination": "https://www.comfydeploy.com/workflows/figurine-sculptures-3d-nano-banana",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/first-last-frame-i2v-wan22-fast",
+      "destination": "https://www.comfydeploy.com/workflows/first-last-frame-i2v-wan22-fast",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/flf-wan22-i2v",
+      "destination": "https://www.comfydeploy.com/workflows/flf-wan22-i2v",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/flux-kontext",
+      "destination": "https://www.comfydeploy.com/workflows/model/flux-kontext",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/game-guide-with-layout-nano-banana",
+      "destination": "https://www.comfydeploy.com/workflows/strategy-guide-nano-banana-1",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/groktrend_dance",
+      "destination": "https://www.comfydeploy.com/workflows/groktrenddance",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/hy3d-v21-all",
+      "destination": "https://www.comfydeploy.com/workflows/convert-2d-to-3d-with-hy3d-v21",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/infinite-avatar",
+      "destination": "https://www.comfydeploy.com/workflows/infinite-avatar",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/infinite-avatar-lean-fast",
+      "destination": "https://www.comfydeploy.com/workflows/infinite-avatar-lean-fast",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/insta-pic-nano-banana",
+      "destination": "https://www.comfydeploy.com/workflows/insta-pic-nano-banana",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/kontext-presets",
+      "destination": "https://www.comfydeploy.com/workflows/kontext-presets-local-nunchaku",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/kontext_presets_api",
+      "destination": "https://www.comfydeploy.com/workflows/kontextpresetsapi",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/kontextdev-edit-with-two-images-with-nag",
+      "destination": "https://www.comfydeploy.com/workflows/kontextdev-edit-with-two-images-with-nag",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/krea_plus_wan",
+      "destination": "https://www.comfydeploy.com/workflows/ultra-video-oss-vs-multi-million-dollar-giants",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/photo-restoration-nano-banana",
+      "destination": "https://www.comfydeploy.com/workflows/photo-restoration-nano-banana",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/portrait-re-styler",
+      "destination": "https://www.comfydeploy.com/workflows/re-styler",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/qween-plus-wan22",
+      "destination": "https://www.comfydeploy.com/workflows/qween-image-fast-t2i-plus-wan22-fast-i2v",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/qwen-image-edit",
+      "destination": "https://www.comfydeploy.com/workflows/qwen-image-edit-native",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/qwen-image-edit-try-on",
+      "destination": "https://www.comfydeploy.com/workflows/qwen-image-edit-try-on",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/restyle-images-kontext-max",
+      "destination": "https://www.comfydeploy.com/workflows/restyle-images-kontext-max",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/strategy-guide-nano-banana",
+      "destination": "https://www.comfydeploy.com/workflows/strategy-guide-nano-banana-1",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/through-the-ages-grid-nano-banana",
+      "destination": "https://www.comfydeploy.com/workflows/through-the-ages-grid-nano-banana",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/thumbnail-generation",
+      "destination": "https://www.comfydeploy.com/workflows/thumbnail-generation",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/try-on-nano-banana",
+      "destination": "https://www.comfydeploy.com/workflows/try-on-nano-banana",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/video_restoration_potato_to_hd",
+      "destination": "https://www.comfydeploy.com/workflows/seedvr2-video-restoration",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/voice-cloner-chatts",
+      "destination": "https://www.comfydeploy.com/workflows/voice-cloner-chatts",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/waifu_simper",
+      "destination": "https://www.comfydeploy.com/workflows/waifusimper",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:user/wan22-image-to-video-with-radial-attention",
+      "destination": "https://www.comfydeploy.com/workflows/wan22-image-to-video-with-radial-attention",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/workflow/img2lora",
+      "destination": "https://www.comfydeploy.com/workflows",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/workflow/product-generatorv2",
+      "destination": "https://www.comfydeploy.com/workflows",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/workflow/:slug",
+      "destination": "https://www.comfydeploy.com/workflows/:slug",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/share/playground/:path*",
+      "destination": "https://www.comfydeploy.com/workflows",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/news",
+      "destination": "https://www.comfydeploy.com/blog",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/news/:slug",
+      "destination": "https://www.comfydeploy.com/blog/:slug",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "destination": "https://www.comfydeploy.com/workflows",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "permanent": true
+    },
+    {
       "source": "/sitemap.xml",
       "destination": "/sitemap-index.xml",
       "permanent": true
