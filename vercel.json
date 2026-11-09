@@ -487,6 +487,17 @@
       "permanent": true
     },
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.comfydeploy.com"
+        }
+      ],
+      "destination": "https://www.comfydeploy.com/workflows",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "destination": "https://www.comfydeploy.com/workflows",
       "has": [
