@@ -1,0 +1,41 @@
+---
+title: "Jensen Huang Is Back as NVIDIA CEO: What It Means for GPU Users"
+description: "NVIDIA reinstated Jensen Huang as CEO on Nov 23, 2026, 11 days after he resigned. What changed, what did not, and what it means for image and video builders."
+date: 2026-11-23
+category: "News"
+cover: ./jensen-huang-nvidia-ceo-return/cover.jpg
+---
+
+*Image: [NVIDIA](https://nvidianews.nvidia.com/news/rubin-platform-ai-supercomputer), Rubin platform racks.*
+
+On November 23, 2026, NVIDIA's board reinstated Jensen Huang as President, CEO and board member, effective immediately. He had resigned on November 12. For anyone who renders images and video on NVIDIA GPUs, the practical question is short: does the hardware roadmap you plan around change? Here is what NVIDIA has said on its own newsroom, and what it has not said.
+
+## What happened: the timeline from NVIDIA's own releases
+
+- **November 12.** NVIDIA [announced](https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition) that Huang had resigned as President, CEO and director, effective immediately. CFO Colette Kress became interim CEO while keeping her CFO role, and Harvey C. Jones became the board's first-ever chair. The board said it expected operations, customer commitments and the product roadmap to continue without interruption.
+- **November 17.** NVIDIA reported [third-quarter fiscal 2027 results](https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-third-quarter-fiscal-2027): revenue of $115.8 billion, of which $107.6 billion was Data Center. The same day it created a board-level [National Security and Export Control Oversight Committee](https://nvidianews.nvidia.com/news/nvidia-board-of-directors-establishes-national-security-and-export-control-oversight-committee).
+- **November 23.** The board [voted unanimously to reinstate Huang](https://nvidianews.nvidia.com/news/nvidia-board-reinstates-jensen-huang-as-president-ceo-and-board-director). Kress returns to her CFO duties, and Jones stays as chair.
+
+## Why the board says it reversed course
+
+According to the November 23 release, the board reinstated Huang after a series of discussions and meetings, and said it was satisfied with his candor and ability to lead. It also said it received input from senior levels of the United States government and is confident his reinstatement poses no national security risk.
+
+The release says an independent committee is still investigating what it calls recent reporting that Huang was the target of a foreign intelligence effort, and that the investigation will proceed to conclusion. NVIDIA also said it is searching for a new Chief Compliance Officer and will keep cooperating with government investigations. We are reporting only what the company has stated. We have not confirmed other claims circulating on social media, and we are not repeating them.
+
+## What it means for the NVIDIA GPU roadmap
+
+NVIDIA's public hardware plan has not changed in any of these releases. On the November 17 earnings release, Kress, then interim CEO, said Vera Rubin is off to a strong start and the roadmap is on track. NVIDIA's [January 2026 Rubin announcement](https://nvidianews.nvidia.com/news/rubin-platform-ai-supercomputer) said Rubin is in full production, with partner products available in the second half of 2026. NVIDIA says the platform delivers up to 10 times lower inference token cost than Blackwell for mixture-of-experts models. That figure is NVIDIA's own claim about language-model inference, and it should not be read as a speed-up for diffusion models.
+
+Two details matter for image and video work. The same announcement lists Black Forest Labs and Runway among the companies expected to adopt Rubin, and names CoreWeave, Lambda, Nebius and Nscale among the cloud partners deploying it. Neither is a delivery date or a price for your workloads.
+
+## What the releases do not say
+
+None of the four announcements discusses GPU pricing, availability for smaller customers or consumer cards. NVIDIA's fourth-quarter outlook of $130 billion in revenue, plus or minus 3%, assumes no Data Center compute revenue from China. Export controls and the new oversight committee are the area to watch if you buy or rent high-end GPUs across borders. We would not infer a change in cloud GPU prices from a change in the CEO.
+
+## What it means in practice
+
+If you run image and video models, nothing in the leadership change alters what you can rent today. Inference cost still depends on the card, the model size and the precision you use. Our [FLUX 3 Klein](/blog/flux-3-klein-comfyui) and [Qwen-Image 2.1](/blog/qwen-image-2-1-comfyui) guides show how file sizes map to GPU memory, and the [NVIDIA Cosmos 3 post](/blog/nvidia-cosmos-3-open-world-models) covers NVIDIA's own open models.
+
+Memory is usually the limit for image generation, not the CEO. The newest open image models are large: in our [MiniMax H3 Image guide](/blog/minimax-h3-image-open-weights), the official ComfyUI template's model files add up to roughly 54 GB, so we suggest an 80 GB card. Smaller models such as [FLUX 3 Image Klein](/blog/flux-3-klein-comfyui) and [Qwen-Image 2.1](/blog/qwen-image-2-1-comfyui) need less memory. Our [Qwen-Image](/workflows/model/qwen-image) and [FLUX](/workflows/model/flux) workflow pages collect ready-to-run text-to-image and editing graphs.
+
+Plan for the cards that exist now and treat new generations as upgrades you adopt when your provider lists them. ComfyDeploy runs ComfyUI workflows on cloud GPUs from T4 up to H100 and H200, so you can move a workflow to a larger card without rebuilding it. You can test one in the [ComfyUI playground](/comfyui-playground), then serve it through the [ComfyUI API](/comfyui-api). Browse ready-made graphs in the [workflow library](/workflows).
